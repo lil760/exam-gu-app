@@ -55,7 +55,7 @@ userRepository.delete(user);
                 .anyMatch(authority -> "ROLE_ADMIN".equals(authority.getAuthority()));
 
         if (isAdmin) {
-long adminCount = userRepository.countAdminUser();
+long adminCount = userRepository.countAdminUsers();
        return adminCount <= 1;
         }
         return false;
