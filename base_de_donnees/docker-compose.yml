@@ -1,0 +1,43 @@
+version: "3.9"
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: exam_mysql
+    command: ["--default-authentication-plugin=mysql_native_password","--sql_mode=STRICT_ALL_TABLES"]
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: exam_app
+    ports: ["3306:3306"]
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d:ro
+
+  phpmyadmin:
+    image: phpmyadmin:5
+    container_name: exam_phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports: ["8080:80"]
+    depends_on: [mysql]
+
+  mongo:
+    image: mongo:7
+    container_name: exam_mongo
+    ports: ["27017:27017"]
+    volumes:
+      - mongo_data:/data/db
+      - ./mongo/init:/docker-entrypoint-initdb.d:ro
+
+  mongo-express:
+    image: mongo-express:1.0.2
+    container_name: exam_mongo_express
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
+    ports: ["8081:8081"]
+    depends_on: [mongo]
+
+volumes:
+  mysql_data:
+  mongo_data:
