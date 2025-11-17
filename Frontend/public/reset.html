@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EXAM-GU — Réinitialiser le mot de passe</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <main class="card" role="main">
+    <div class="brand" aria-hidden="true">
+        <img src="./assets/logo.png" alt="EXAM GU">
+      </div>
+      
+    <h1>Réinitialiser le mot de passe</h1>
+    <form id="resetForm" novalidate>
+      <div class="field">
+        <label class="label" for="email">Adresse courriel</label>
+        <input class="input" id="email" type="email" placeholder="vous@exemple.com" required />
+      </div>
+      <div class="actions">
+        <button type="submit" class="btn-primary">Envoyer le lien</button>
+        <a class="link" href="./index.html">Retour</a>
+      </div>
+    </form>
+  </main>
+  <script>
+    document.getElementById('resetForm').addEventListener('submit', (e)=>{
+      e.preventDefault(); alert('Lien envoyé (démo).');
+    });
+  </script>
+</body>
+</html>

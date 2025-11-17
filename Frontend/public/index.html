@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EXAM-GU </title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <main class="card" role="main" aria-labelledby="titre">
+    <!-- Logo -->
+    <div class="brand brand--floating" aria-hidden="true">
+        <img src="./assets/logo.png" alt="">
+      </div>
+      
+      
+
+    <h1 id="titre">Connexion </h1>
+
+    <form id="loginForm" novalidate>
+      <div class="field">
+        <label class="label" for="email">Identifiant ou adresse courriel</label>
+        <input class="input" id="email" name="email" type="email" autocomplete="username"
+               placeholder="enseignant@exemple.com" required />
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="M4 6h16v12H4z"></path><path d="M4 7l8 6 8-6"></path>
+        </svg>
+      </div>
+
+      <div class="field">
+        <label class="label" for="password">Mot de passe</label>
+        <input class="input" id="password" name="password" type="password" autocomplete="current-password"
+               placeholder="••••••••" minlength="6" required />
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <rect x="4" y="10" width="16" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+        </svg>
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="btn-primary">Se connecter</button>
+        <a class="link" href="./reset.html">Mot de passe oublié ?</a>
+      </div>
+    </form>
+  </main>
+
+  <script type="module" src="../js/app.js"></script>
+</body>
+</html>
