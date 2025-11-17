@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EXAM-GU — Accueil Enseignant</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="has-topbar bg-white">
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <!-- LOGO NON CLIQUABLE -->
+      <div class="brand-circle" aria-label="EXAM-GU">
+        <img src="./assets/logo.png" alt="EXAM GU">
+      </div>
+      <div class="home-link" aria-current="page">
+        <span class="icon-home" aria-hidden="true"></span>
+        <span>Accueil</span>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <div class="search">
+        <input id="searchExam" type="search" placeholder="Rechercher un examen" aria-label="Rechercher un examen">
+        <span class="icon-search" aria-hidden="true"></span>
+      </div>
+
+      <div class="user-menu">
+        <button class="user-btn" id="userMenuBtn" aria-haspopup="menu" aria-expanded="false">
+          <span>Bonjour, <strong id="teacherName">Jean-Luc</strong></span>
+          <span class="avatar" aria-hidden="true">JL</span>
+          <span class="caret" aria-hidden="true"></span>
+        </button>
+        <ul class="user-dropdown" id="userDropdown" role="menu" aria-label="Menu utilisateur">
+          <li role="menuitem"><button id="logoutBtn" class="dropdown-link">Se déconnecter</button></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1 class="page-title">Examens créés</h1>
+
+    <!-- CTA en haut -->
+    <div class="cta-row cta-top">
+      <button class="btn-primary big" id="btnAddStudent">
+        <span class="icon-user-plus" aria-hidden="true"></span>
+        Ajouter étudiant
+      </button>
+      <button class="btn-primary big" id="btnCreateExam">
+        Créer un examen <span class="icon-plus" aria-hidden="true"></span>
+      </button>
+    </div>
+
+    <!-- LISTE VERTICALE -->
+    <section class="exam-list" id="examList">
+      <!-- 1 ligne = 1 examen -->
+      <article class="exam-row" data-exam="1">
+        <div class="exam-info">
+          <h2 class="exam-title">Examen Calcul avancé 2</h2>
+          <div class="exam-meta">27 Nov 2025 • 08:30 • 2h45</div>
+        </div>
+
+        <div class="exam-actions">
+          <button class="rect-btn rect-list" aria-expanded="false" aria-controls="panel-1" title="Liste des étudiants">Liste</button>
+          <button class="rect-btn rect-edit" title="Modifier">Modifier</button>
+          <button class="rect-btn rect-del"  title="Supprimer">Supprimer</button>
+        </div>
+
+        <!-- panneau étudiants -->
+        <div class="students-panel" id="panel-1" hidden>
+          <ul>
+            <li>Eva Martin</li>
+            <li>Rayan B.</li>
+            <li>Amina T.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="exam-row" data-exam="2">
+        <div class="exam-info">
+          <h2 class="exam-title">Examen Élément de programmation</h2>
+          <div class="exam-meta">30 Nov 2025 • 13:00 • 2h45</div>
+        </div>
+
+        <div class="exam-actions">
+          <button class="rect-btn rect-list" aria-expanded="false" aria-controls="panel-2" title="Liste des étudiants">Liste</button>
+          <button class="rect-btn rect-edit" title="Modifier">Modifier</button>
+          <button class="rect-btn rect-del"  title="Supprimer">Supprimer</button>
+        </div>
+
+        <div class="students-panel" id="panel-2" hidden>
+          <ul>
+            <li>Yasmina L.</li>
+            <li>Samuel K.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="exam-row" data-exam="3">
+        <div class="exam-info">
+          <h2 class="exam-title">Examen Algèbre matricielle</h2>
+          <div class="exam-meta">12 Déc 2025 • 09:00 • 2h45</div>
+        </div>
+
+        <div class="exam-actions">
+          <button class="rect-btn rect-list" aria-expanded="false" aria-controls="panel-3" title="Liste des étudiants">Liste</button>
+          <button class="rect-btn rect-edit" title="Modifier">Modifier</button>
+          <button class="rect-btn rect-del"  title="Supprimer">Supprimer</button>
+        </div>
+
+        <div class="students-panel" id="panel-3" hidden>
+          <ul>
+            <li>Jean D.</li>
+            <li>Inès P.</li>
+            <li>Léo R.</li>
+          </ul>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script type="module">
+    // Recherche : filtre les lignes
+    const q = document.getElementById('searchExam');
+    const rows = [...document.querySelectorAll('.exam-row')];
+    q?.addEventListener('input', () => {
+      const v = q.value.toLowerCase().trim();
+      rows.forEach(r => r.style.display = r.innerText.toLowerCase().includes(v) ? '' : 'none');
+    });
+
+    // Menu utilisateur + logout
+    const btn = document.getElementById('userMenuBtn');
+    const dd  = document.getElementById('userDropdown');
+    document.getElementById('logoutBtn')?.addEventListener('click', () => {
+      localStorage.removeItem('token'); sessionStorage.removeItem('token');
+      window.location.href = './index.html';
+    });
+    function openMenu(open){ btn.setAttribute('aria-expanded', String(open)); dd.classList.toggle('open', open); }
+    btn?.addEventListener('click', e => { e.stopPropagation(); openMenu(btn.getAttribute('aria-expanded') !== 'true'); });
+    document.addEventListener('click', () => openMenu(false));
+    document.addEventListener('keydown', e => { if(e.key==='Escape') openMenu(false); });
+
+    // Panneau "Liste des étudiants"
+    document.querySelectorAll('.rect-list').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        const panel = document.getElementById(b.getAttribute('aria-controls'));
+        const willOpen = panel.hasAttribute('hidden');
+        // refermer les autres
+        document.querySelectorAll('.students-panel').forEach(p=>p.setAttribute('hidden',''));
+        document.querySelectorAll('.rect-list').forEach(x=>x.setAttribute('aria-expanded','false'));
+        if (willOpen) { panel.removeAttribute('hidden'); b.setAttribute('aria-expanded','true'); }
+      });
+    });
+
+    // Modifier (démo)
+    document.querySelectorAll('.rect-edit').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        const id = b.closest('.exam-row').dataset.exam;
+        alert('Modifier examen #' + id + ' (à brancher)');
+      });
+    });
+
+    // Supprimer (démo)
+    document.querySelectorAll('.rect-del').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        const row = b.closest('.exam-row');
+        if(confirm('Supprimer cet examen ?')) row.remove();
+      });
+    });
+
+    // CTA
+    document.getElementById('btnAddStudent')?.addEventListener('click', ()=> alert('Ajouter étudiant (à brancher)'));
+    document.getElementById('btnCreateExam')?.addEventListener('click', ()=> alert('Créer un examen (à brancher)'));
+  </script>
+</body>
+</html>
