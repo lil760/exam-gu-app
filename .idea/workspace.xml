@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="aec4d098-9580-4f84-aca5-779adb7525b4" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/base_de_donnees/MySQL/init/BD_relationnel.sql" beforeDir="false" afterPath="$PROJECT_DIR$/base_de_donnees/MySQL/init/BD_relationnel.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/ExamGuAppApplication.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/config/JwtAuthentificationFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/config/SecurityConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/config/SwaggerConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/controller/AuthenticationController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/controller/ExamController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/controller/QuestionController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/controller/UserController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/entity/Authority.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/entity/Choice.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/entity/Exam.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/entity/QCMQuestion.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/entity/Question.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/entity/QuestionType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/entity/TrueFalseQuestion.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/entity/User.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/exception/ExceptionHandlers.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/exception/ExceptionResponses.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/repository/ExamRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/repository/QCMQuestionRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/repository/QuestionRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/repository/TrueFalseQuestionRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/repository/UserRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/request/AuthenticationRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/request/CreateExamRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/request/CreateQcmQuestionRequest$ChoiceDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/request/CreateQcmQuestionRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/request/CreateTrueFalseQuestionRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/request/PasswordUpdateRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/request/RegisterRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/response/AuthenticationResponse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/response/ExamResponse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/response/QuestionResponse$ChoiceResponse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/response/QuestionResponse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/response/UserResponse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/service/AuthenticationService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/service/AuthenticationServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/service/ExamService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/service/ExamServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/service/JwtService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/service/JwtServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/service/QuestionService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/service/QuestionServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/service/UserService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/service/UserServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/util/FindAuthenticatedUser.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ca/uqac/groupe/examgu/util/FindAuthenticatedUserImpl.class" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 1
+}]]></component>
+  <component name="ProjectId" id="35hZPF2AeOJ1NsOxBExhI5cpdCc" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "develop",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/UQAC/2025_Fall/Architecture_des_logiciels(6GEI311)/Projet/exam-gu-app/Backend"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="aec4d098-9580-4f84-aca5-779adb7525b4" name="Changes" comment="" />
+      <created>1763564239566</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1763564239566</updated>
+    </task>
+    <servers />
+  </component>
+</project>
