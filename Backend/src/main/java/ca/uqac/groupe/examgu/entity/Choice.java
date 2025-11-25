@@ -1,8 +1,6 @@
 package ca.uqac.groupe.examgu.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Column;
+import jakarta.persistence.*;
 
 @Entity
 public class Choice {
@@ -15,6 +13,10 @@ public class Choice {
 
     private boolean correct;
 
+    @ManyToOne
+    @JoinColumn(name = "question_id", nullable = false)
+    private QCMQuestion question;
+
     public Choice() {
     }
 
@@ -23,6 +25,7 @@ public class Choice {
         this.text = text;
         this.correct = correct;
     }
+
 
     public String getId() { 
         return id; 

@@ -24,7 +24,7 @@ private String email;
 private String password ;
     @Column(updatable  = false,name="created_at")
 private Date createdAt ;
-    @Column(name="created_at")
+    @Column(name="updapted_at")
 private Date updatedAt ;
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name="user_authorities",joinColumns= @JoinColumn(name="user_id"))
