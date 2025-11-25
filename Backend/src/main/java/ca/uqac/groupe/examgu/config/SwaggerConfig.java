@@ -14,7 +14,7 @@ info= @Info(title ="API Documentation",version ="v1"),
 
 )
 @SecurityScheme(
-        name = "bearerAth",
+        name = "bearerAuth",
         type = SecuritySchemeType.HTTP,
         scheme = "bearer",
         bearerFormat ="JWT"
