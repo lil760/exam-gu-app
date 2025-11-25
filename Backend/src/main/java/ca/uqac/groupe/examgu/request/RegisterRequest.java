@@ -17,7 +17,8 @@ public class RegisterRequest {
     @NotEmpty(message = "Password  is mandatory ")
     @Size(min=8,max=30,message= "Password must be at least 8 characters long ")
     private String password;
-
+    public RegisterRequest() {
+    }
     public RegisterRequest(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;

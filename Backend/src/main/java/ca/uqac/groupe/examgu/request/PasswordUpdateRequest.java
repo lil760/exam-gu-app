@@ -15,7 +15,7 @@ public class PasswordUpdateRequest {
     @NotEmpty(message = "Confirm Password  is mandatory ")
     @Size(min=8,max=30,message= " Confirmed password must be at least 8 characters long ")
     private String newPassword2;
-
+public PasswordUpdateRequest() {}
     public PasswordUpdateRequest(String oldPassword, String newPassword, String newPassword2) {
         this.oldPassword = oldPassword;
         this.newPassword = newPassword;
