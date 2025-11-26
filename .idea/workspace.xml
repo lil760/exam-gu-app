@@ -4,61 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aec4d098-9580-4f84-aca5-779adb7525b4" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/ca/uqac/groupe/examgu/config/JwtAuthentificationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/ca/uqac/groupe/examgu/config/JwtAuthentificationFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/ca/uqac/groupe/examgu/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/ca/uqac/groupe/examgu/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/ExamGuAppApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/config/JwtAuthentificationFilter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/config/SecurityConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/config/SwaggerConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/controller/AdminController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/controller/AuthenticationController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/controller/ExamController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/controller/QuestionController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/controller/UserController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/entity/Authority.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/entity/Choice.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/entity/Exam.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/entity/QCMQuestion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/entity/Question.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/entity/QuestionType.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/entity/TrueFalseQuestion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/entity/User.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/exception/ExceptionHandlers.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/exception/ExceptionResponses.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/repository/ExamRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/repository/QCMQuestionRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/repository/QuestionRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/repository/TrueFalseQuestionRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/repository/UserRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/request/AuthenticationRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/request/CreateExamRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/request/CreateQcmQuestionRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/request/CreateTrueFalseQuestionRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/request/PasswordUpdateRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/request/RegisterRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/response/AuthenticationResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/response/ExamResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/response/QuestionResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/response/UserResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/service/AdminService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/service/AdminServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/service/AuthenticationService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/service/AuthenticationServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/service/ExamService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/service/ExamServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/service/JwtService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/service/JwtServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/service/QuestionService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/service/QuestionServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/service/UserService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/service/UserServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/util/FindAuthenticatedUser.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/uqac/groupe/examgu/util/FindAuthenticatedUserImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ca/uqac/groupe/examgu/ExamGuAppApplicationTests.java" beforeDir="false" />
-    </list>
+    <list default="true" id="aec4d098-9580-4f84-aca5-779adb7525b4" name="Changes" comment="restructuration du code" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -127,8 +73,17 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1763564239566</updated>
-      <workItem from="1764192734488" duration="684000" />
+      <workItem from="1764192734488" duration="892000" />
     </task>
+    <task id="LOCAL-00001" summary="restructuration du cose">
+      <option name="closed" value="true" />
+      <created>1764193496891</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1764193496891</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -144,5 +99,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="restructuration du cose" />
+    <option name="LAST_COMMIT_MESSAGE" value="restructuration du cose" />
   </component>
 </project>
