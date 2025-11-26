@@ -2,6 +2,9 @@ package ca.uqac.groupe.examgu.controller;
 
 import ca.uqac.groupe.examgu.entity.Exam;
 import ca.uqac.groupe.examgu.request.CreateExamRequest;
+import ca.uqac.groupe.examgu.request.UpdateExamAvailabilityRequest;
+import ca.uqac.groupe.examgu.request.UpdateExamDurationRequest;
+import ca.uqac.groupe.examgu.request.UpdateExamGradingRequest;
 import ca.uqac.groupe.examgu.service.ExamService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,7 +30,6 @@ public class ExamController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public Exam createExam(@Valid @RequestBody CreateExamRequest request) {
-        // Le service renvoie directement un Exam
         return examService.createExam(request);
     }
 
@@ -36,5 +38,32 @@ public class ExamController {
     @GetMapping("/{id}")
     public Exam getExamById(@PathVariable Long id) {
         return examService.getExamById(id);
+    }
+
+    @Operation(summary = "Update exam grading scheme",
+            description = "Update the points/weighting of questions for a given exam")
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/{id}/grading")
+    public Exam updateExamGrading(@PathVariable Long id,
+                                  @Valid @RequestBody UpdateExamGradingRequest request) {
+        return examService.updateExamGrading(id, request);
+    }
+
+    @Operation(summary = "Update exam availability",
+            description = "Update start and end date/time of an exam")
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/{id}/availability")
+    public Exam updateExamAvailability(@PathVariable Long id,
+                                       @Valid @RequestBody UpdateExamAvailabilityRequest request) {
+        return examService.updateExamAvailability(id, request);
+    }
+
+    @Operation(summary = "Update exam duration",
+            description = "Update the duration (in minutes) of an exam")
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/{id}/duration")
+    public Exam updateExamDuration(@PathVariable Long id,
+                                   @Valid @RequestBody UpdateExamDurationRequest request) {
+        return examService.updateExamDuration(id, request);
     }
 }
