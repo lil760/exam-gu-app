@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EXAM-GU</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="page-offset"><!-- un seul body -->
+
+  <!-- HEADER  -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <!-- Logo → Accueil -->
+      <a class="brand-circle"  aria-label="EXAM-GU">
+        <img src="./assets/logo.png" alt="EXAM GU">
+      </a>
+
+      <!-- Lien Accueil -->
+      <a class="home-link" href="./enseignant_accueil.html" aria-current="page">
+        <span class="icon-home" aria-hidden="true"></span>
+        <span>Accueil</span>
+      </a>
+
+      <!-- Lien Espace Enseignant -->
+      <a class="eg-nav eg-current">ESPACE ENSEIGNANT</a>
+    </div>
+
+    <div class="topbar-right">
+      <div class="user-menu">
+        <button class="user-btn" id="userMenuBtn" aria-haspopup="menu" aria-expanded="false">
+          <span>Bonjour, <strong id="teacherName">Jean-Luc</strong></span>
+          <span class="avatar" aria-hidden="true">JL</span>
+          <span class="caret" aria-hidden="true"></span>
+        </button>
+        <ul class="user-dropdown" id="userDropdown" role="menu" aria-label="Menu utilisateur">
+          <li role="menuitem"><a id="logoutBtn" class="dropdown-link" href="./index.html">Se déconnecter</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <!-- … le reste de TA PAGE (h1, main, template, scripts) … -->
+
+
+
+
+<!-- Ajoute sur <body> la classe page-offset pour compenser le header fixe -->
+
+  <body class="page-offset">
+  <h1 class="exam-title-main">Informations de l’examen</h1>
+
+    <main class="wrap" id="examEditor">
+        <!-- Métadonnées de l'examen (existant chez toi) -->
+        <section class="exam-meta">
+          <input id="examTitle" type="text" placeholder="Titre de l’examen" required>
+          <input id="examDate" type="date" required>
+          <input id="examStart" type="time" required>
+          <input id="examDuration" type="text" placeholder="Durée (ex: 2h45)" required>
+        </section>
+      
+        <!-- Liste des questions -->
+        <section id="questions"></section>
+
+        <template id="tplQuestion">
+          <article class="q-card" data-question>
+            <header class="q-head">
+              <div class="q-line">
+                <div class="q-left">
+                  <div class="q-num">Question <span class="q-number">1</span> :</div>
+                  <label class="q-label">
+                    Description
+                    <input class="q-text" type="text" placeholder="Écrivez la question…" required>
+                  </label>
+                </div>
+        
+                <div class="q-right">
+                  <label class="q-label">
+                    Barème
+                    <input class="q-points" type="number" min="0" step="0.5" placeholder="Valeur" required>
+                  </label>
+        
+                  <!-- Choix du type AVANT d'afficher les champs -->
+                  <fieldset class="q-type-pick">
+                    <legend>Type de question</legend>
+                    <label class="radio">
+                      <input type="radio" name="qtype" value="QCM">
+                      <span>QCM</span>
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="qtype" value="TRUE_FALSE">
+                      <span>Vrai/Faux</span>
+                    </label>
+                  </fieldset>
+                </div>
+              </div>
+            </header>
+        
+            <!-- Corps : caché tant qu’aucun type n’est choisi -->
+            <div class="q-body is-collapsed" data-body>
+              <!-- Bloc QCM -->
+              <div class="qcm-block is-hidden" data-qcm>
+                <div class="choices">
+                  <div class="choice">
+                    <label class="ch-label">A</label>
+                    <input type="text" class="qcm-text" placeholder="Réponse A">
+                    <label class="chk"><input type="checkbox" class="qcm-correct"> Correcte</label>
+                  </div>
+                  <div class="choice">
+                    <label class="ch-label">B</label>
+                    <input type="text" class="qcm-text" placeholder="Réponse B">
+                    <label class="chk"><input type="checkbox" class="qcm-correct"> Correcte</label>
+                  </div>
+                  <div class="choice">
+                    <label class="ch-label">C</label>
+                    <input type="text" class="qcm-text" placeholder="Réponse C">
+                    <label class="chk"><input type="checkbox" class="qcm-correct"> Correcte</label>
+                  </div>
+                  <div class="choice">
+                    <label class="ch-label">D</label>
+                    <input type="text" class="qcm-text" placeholder="Réponse D">
+                    <label class="chk"><input type="checkbox" class="qcm-correct"> Correcte</label>
+                  </div>
+                </div>
+        
+                <div class="qcm-toolbar">
+                  <label class="chk">
+                    <input type="checkbox" class="qcm-multi"> Réponses multiples autorisées
+                  </label>
+                  <button type="button" class="btn ghost add-choice">+ Ajouter une réponse</button>
+                </div>
+              </div>
+        
+              <!-- Bloc V/F -->
+              <div class="tf-block is-hidden" data-tf>
+                <label class="radio">
+                  <input type="radio" name="tf" value="true">
+                  <span>Vrai</span>
+                </label>
+                <label class="radio">
+                  <input type="radio" name="tf" value="false">
+                  <span>Faux</span>
+                </label>
+              </div>
+            </div>
+        
+            <footer class="q-foot">
+              <button type="button" class="btn danger q-remove">Supprimer la question</button>
+            </footer>
+          </article>
+        </template>
+        <div class="actions-row ctas">
+          <button id="btnAddQuestion" class="btn-primary big btn-cta">Ajouter une question +</button>
+          <button id="btnSaveExam"  class="btn-primary big btn-cta">Enregistrer l’examen</button>
+          <button id="btnCancel"     class="btn-primary big btn-cta">Annuler</button>
+        </div>
+        
+      </main>
+</body>
+
+
+<script type="module">
+  const qs  = (s,el=document)=>el.querySelector(s);
+  const qsa = (s,el=document)=>[...el.querySelectorAll(s)];
+  const $questions = qs('#questions');
+  const $tpl = qs('#tplQuestion');
+
+  function renumber() {
+  qsa('[data-question]', $questions).forEach((card, i) => {
+    // numéro
+    const span = qs('.q-number', card);
+    if (span) span.textContent = String(i + 1);
+    // alternance de thème (gris / vert) comme sur ta capture
+    card.classList.toggle('is-alt', i % 2 === 1); // 2e, 4e, … en vert
+    // radios True/False : nom unique par question
+    qsa('[data-tf] input[type=radio]', card).forEach(r => r.name = `tf_${i}`);
+  });
+}
+
+
+  function revealBody(card, type){
+    const body = qs('[data-body]', card);
+    const qcm  = qs('[data-qcm]', card);
+    const tf   = qs('[data-tf]', card);
+    qcm.classList.add('is-hidden');
+    tf.classList.add('is-hidden');
+    if(type==='QCM') qcm.classList.remove('is-hidden');
+    if(type==='TRUE_FALSE') tf.classList.remove('is-hidden');
+    body.classList.remove('is-collapsed'); // on déroule
+  }
+
+  function createQuestion(){
+    const node = $tpl.content.firstElementChild.cloneNode(true);
+
+    // 🔁 écouter le CHOIX DE TYPE (radios)
+    qsa('.q-type-pick input[type=radio]', node).forEach(radio=>{
+      radio.addEventListener('change', ()=> revealBody(node, radio.value));
+    });
+
+    // ➕ ajouter un choix QCM
+    qs('.add-choice', node).addEventListener('click', ()=>{
+      const wrap = qs('.choices', node);
+      const i = wrap.children.length;
+      const label = String.fromCharCode(65 + i); // E,F,G...
+      const row = document.createElement('div');
+      row.className = 'choice';
+      row.innerHTML = `
+        <label class="ch-label">${label}</label>
+        <input type="text" class="qcm-text" placeholder="Réponse ${label}">
+        <label class="chk"><input type="checkbox" class="qcm-correct"> Correcte</label>
+      `;
+      wrap.appendChild(row);
+    });
+
+    // 🗑 supprimer la question
+    qs('.q-remove', node).addEventListener('click', ()=>{
+      node.remove(); renumber();
+    });
+
+    $questions.appendChild(node);
+    renumber();
+    return node;
+  }
+
+  function collectPayload(){
+    const meta = {
+      title: qs('#examTitle').value.trim(),
+      date:  qs('#examDate').value,
+      start: qs('#examStart').value,
+      duration: qs('#examDuration').value.trim()
+    };
+
+    const questions = qsa('[data-question]', $questions).map(card=>{
+      const text   = qs('.q-text', card).value.trim();
+      const points = Number(qs('.q-points', card).value);
+      // ✅ lire le type via les RADIOS (et non plus via .q-type-select)
+      const type   = qs('.q-type-pick input[type=radio]:checked', card)?.value || null;
+
+      if(type==='QCM'){
+        const multi = qs('.qcm-multi', card).checked;
+        const choices = qsa('.choice', card).map(row=>({
+          label: qs('.ch-label', row)?.textContent?.trim() || '',
+          text:  qs('.qcm-text', row).value.trim(),
+          isCorrect: qs('.qcm-correct', row).checked
+        }));
+        return { text, points, type:'QCM', multipleAnswersAllowed: multi, choices };
+      }
+
+      if(type==='TRUE_FALSE'){
+        const val = qs('[data-tf] input[type=radio]:checked', card)?.value;
+        return { text, points, type:'TRUE_FALSE', correct: (val === 'true') };
+      }
+
+      return { text, points, type:null };
+    });
+
+    return { meta, questions };
+  }
+
+  function validate(payload){
+    const errors = [];
+    if(!payload.meta.title) errors.push('Titre requis');
+    if(!payload.meta.date || !payload.meta.start) errors.push('Date et heure requises');
+
+    payload.questions.forEach((q,i)=>{
+      if(!q.text) errors.push(`Question ${i+1}: énoncé requis`);
+      if(!(q.points >= 0)) errors.push(`Question ${i+1}: barème invalide`);
+      if(!q.type) errors.push(`Question ${i+1}: type non choisi`);
+
+      if(q.type==='QCM'){
+        const filled  = q.choices.filter(c=>c.text);
+        const correct = q.choices.filter(c=>c.isCorrect);
+        if(filled.length < 2) errors.push(`Question ${i+1}: au moins 2 choix`);
+        if(correct.length < 1) errors.push(`Question ${i+1}: cochez la/les bonne(s) réponse(s)`);
+        if(!q.multipleAnswersAllowed && correct.length > 1)
+          errors.push(`Question ${i+1}: désactiver "multiples" ou ne cocher qu’une bonne réponse`);
+      }
+
+      if(q.type==='TRUE_FALSE' && typeof q.correct === 'undefined')
+        errors.push(`Question ${i+1}: choisissez Vrai ou Faux`);
+    });
+
+    return errors;
+  }
+
+  // Boutons
+  qs('#btnAddQuestion').addEventListener('click', ()=>{
+    const card = createQuestion();
+    qs('.q-text', card).focus();
+  });
+
+  qs('#btnSaveExam').addEventListener('click', async ()=>{
+    const payload = collectPayload();
+    const errs = validate(payload);
+    if(errs.length){
+      alert('Veuillez corriger :\n- ' + errs.join('\n- '));
+      return;
+    }
+    console.log('Payload prêt pour l’API:', payload);
+    alert('Examen enregistré (simulation)');
+  });
+
+  qs('#btnCancel').addEventListener('click', ()=> history.back());
+
+  // Démarrage : 1 question affichée
+  createQuestion();
+</script>
+
+    
