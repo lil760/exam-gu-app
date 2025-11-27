@@ -45,16 +45,7 @@
   <main class="wrap">
     <h1 class="page-title">Examens créés</h1>
 
-    <!-- CTA en haut -->
-    <div class="cta-row cta-top">
-      <button class="btn-primary big" id="btnAddStudent">
-        <span class="icon-user-plus" aria-hidden="true"></span>
-        Ajouter étudiant
-      </button>
-      <button class="btn-primary big" id="btnCreateExam">
-        Créer un examen <span class="icon-plus" aria-hidden="true"></span>
-      </button>
-    </div>
+    
 
     <!-- LISTE VERTICALE -->
     <section class="exam-list" id="examList">
@@ -121,6 +112,17 @@
           </ul>
         </div>
       </article>
+      <!-- CTA en bas -->
+    <div class="cta-row cta-top">
+      <button class="btn-primary big" id="btnCreateExam" type="button">
+        Créer un examen <span class="icon-plus" aria-hidden="true"></span>
+      </button>
+      <script>
+        document.getElementById('btnCreateExam').addEventListener('click', function () {
+          window.location.href = './creation_examen.html';
+        });
+      </script>
+    </div>
     </section>
   </main>
 
@@ -173,9 +175,7 @@
       });
     });
 
-    // CTA
-    document.getElementById('btnAddStudent')?.addEventListener('click', ()=> alert('Ajouter étudiant (à brancher)'));
-    document.getElementById('btnCreateExam')?.addEventListener('click', ()=> alert('Créer un examen (à brancher)'));
+    
   </script>
 </body>
 </html>

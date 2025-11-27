@@ -379,3 +379,238 @@
   }
   .exam-info{ margin:0 }
 }
+.is-hidden{ display:none }
+
+.q-card{ background:#f3f5f4; border:1px solid #e5e7eb; border-radius:14px; padding:12px; margin:10px 0 }
+.q-head{ display:grid; gap:12px }
+@media (min-width:860px){ .q-head{ grid-template-columns: 1fr auto } }
+
+.q-title{ display:flex; align-items:center; gap:10px }
+.q-number{ font-weight:700; color:#205a3c }
+.q-text{ width:100%; padding:.6rem .8rem; border-radius:10px; border:1px solid #e5e7eb }
+
+.q-controls{ display:flex; flex-wrap:wrap; align-items:center; gap:10px }
+.q-type select, .q-grade input{ padding:.5rem .6rem; border:1px solid #e5e7eb; border-radius:10px }
+.q-remove{ background:#fff; border:1px solid #ffd6d6; color:#9c2e2e; padding:.5rem .6rem; border-radius:10px; cursor:pointer }
+
+.qcm-fields .choice{ display:flex; align-items:center; gap:8px; margin:.35rem 0 }
+.qcm-fields .choice label{ width:20px; font-weight:700; color:#205a3c }
+.qcm-text{ flex:1; padding:.45rem .6rem; border:1px solid #e5e7eb; border-radius:8px }
+.add-choice{ margin-top:.4rem; border:1px dashed #205a3c; background:#fff; color:#205a3c; padding:.35rem .6rem; border-radius:8px }
+
+.tf-fields{ display:flex; gap:18px; align-items:center; margin:.4rem 0 }
+.actions-row{ display:flex; gap:10px; margin:16px 0 }
+/* ====== Thème (couleurs + base) ====== */
+:root{
+  --green-600:#1d6a3a;
+  --green-500:#23924f;
+  --green-400:#33b164;
+  --green-300:#7cd79e;
+  --gray-900:#0f172a;
+  --gray-700:#334155;
+  --gray-600:#475569;
+  --gray-400:#94a3b8;
+  --gray-300:#cbd5e1;
+  --gray-200:#e5e7eb;
+  --gray-100:#f1f5f9;
+  --white:#fff;
+  --radius-lg:16px;
+  --radius-md:12px;
+  --radius-sm:10px;
+  --shadow-1:0 6px 18px rgba(16,24,40,.06);
+}
+
+/* wrapper */
+.wrap{ max-width: 980px; margin: 0 auto; padding: 18px 16px 36px }
+
+/* Titre de page */
+.page-title, .exam-title-main{
+  font-size: 28px; font-weight: 700; color: var(--green-600);
+  margin: 10px 0 18px;
+}
+
+/* ====== Métadonnées examen (barre grise) ====== */
+.exam-meta{
+  background: linear-gradient(180deg,#f4f6f7, #e8ecef);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  box-shadow: var(--shadow-1);
+  display: grid; gap: 12px;
+}
+.exam-meta input{
+  height: 44px; border-radius: var(--radius-md);
+  border:1px solid var(--gray-300); background:#fff;
+  padding: 0 14px; font-size: 15px;
+}
+.exam-meta input:focus{ outline: none; border-color: var(--green-400); box-shadow: 0 0 0 3px rgba(51,177,100,.18) }
+
+/* ====== Carte Question ====== */
+.q-card{
+  border-radius: var(--radius-lg);
+  border:1px solid var(--gray-200);
+  background: #f3f4f6;
+  margin: 14px 0;
+  box-shadow: var(--shadow-1);
+  overflow: hidden;
+}
+.q-card.is-alt{
+  /* panneau vert (“Question 2” de ta capture) */
+  background: linear-gradient(180deg,#8bd49f 0%, #4ba868 100%);
+  border-color: rgba(0,0,0,.04);
+  color: #f7fffb;
+}
+.q-card .q-label{ color: var(--gray-700); }
+.q-card.is-alt .q-label{ color: #08351c; opacity:.92; }
+
+.q-head{ padding: 14px 14px 0; }
+.q-head .q-line{ display:grid; gap:12px }
+@media(min-width:900px){ .q-head .q-line{ grid-template-columns: 1fr 360px } }
+
+.q-num{ font-size: 18px; font-weight: 700; color: var(--green-600); }
+.q-card.is-alt .q-num{ color: #08351c; }
+
+.q-label{ display:grid; gap:6px; font-size:14px }
+.q-text, .q-points{
+  height: 42px; border-radius: var(--radius-md);
+  border:1px solid var(--gray-300); background:#fff; padding:0 12px; font-size:15px;
+}
+.q-card.is-alt .q-text, .q-card.is-alt .q-points{
+  background: rgba(255,255,255,.96);
+  border-color: rgba(255,255,255,.7);
+}
+
+/* Type de question : pastilles */
+.q-type-pick{ display:flex; gap:10px; align-items:center; border:0; padding:0; margin:0 }
+.q-type-pick .radio{
+  display:inline-flex; gap:8px; align-items:center; cursor:pointer;
+  border:1px solid var(--gray-300); background:#fff; padding:.45rem .7rem;
+  border-radius: 999px; user-select:none; font-weight:600; color: var(--gray-700);
+}
+.q-type-pick .radio input{ display:none }
+.q-type-pick .radio input:checked + span{
+  color:#fff; background: linear-gradient(90deg,var(--green-500),var(--green-400));
+  padding:.35rem .65rem; border-radius:999px;
+}
+.q-card.is-alt .q-type-pick .radio{ border-color: rgba(255,255,255,.6); background: rgba(255,255,255,.9); }
+
+/* Body (réponses) */
+.q-body{ padding: 12px 14px 6px; transition: all .2s ease }
+.is-collapsed{ max-height:0; overflow:hidden; padding:0 14px }
+
+.qcm-block,.tf-block{
+  background:#fff; border:1px solid var(--gray-200);
+  border-radius: var(--radius-md); padding: 12px;
+}
+.q-card.is-alt .qcm-block, .q-card.is-alt .tf-block{
+  background: rgba(255,255,255,.98); border-color: rgba(255,255,255,.6);
+}
+
+.choices{ display:grid; gap:8px }
+.choice{ display:grid; grid-template-columns: 28px 1fr auto; gap:10px; align-items:center }
+.ch-label{
+  width:28px;height:28px;display:grid;place-items:center;
+  border-radius:50%; background: var(--green-500); color:#fff; font-weight:700;
+}
+.qcm-text{
+  height: 40px; border:1px solid var(--gray-300); border-radius: var(--radius-sm);
+  padding:0 10px; font-size:14px; background:#fff;
+}
+.chk{ display:inline-flex; align-items:center; gap:6px; color: var(--gray-700); font-size:14px }
+
+/* Pied de carte */
+.q-foot{ padding: 8px 14px 12px; display:flex; justify-content:flex-end }
+.btn{ border:1px solid var(--gray-300); background:#fff; padding:.55rem .9rem; border-radius:12px; cursor:pointer }
+.btn.danger{ border-color:#ffc9c9; color:#9c2e2e; background:#fff }
+.btn.danger:hover{ background:#fff2f2 }
+
+/* Actions de page */
+.actions-row{ display:flex; gap:12px; margin:16px 0; flex-wrap:wrap }
+.btn-primary{
+  background: linear-gradient(90deg,var(--green-600),var(--green-400));
+  color:#fff; border:none; padding:.75rem 1.1rem; border-radius: 999px; font-weight:700;
+  box-shadow: 0 10px 18px rgba(35,146,79,.20);
+}
+.btn-primary:hover{ filter: brightness(1.05) }
+.btn-secondary{
+  background:#fff; color: var(--gray-700); border:1px solid var(--gray-300);
+  padding:.75rem 1rem; border-radius:999px;
+}
+
+/* Labels “Barème / Description / Type …” plus d’air */
+.q-right{ display:grid; grid-template-columns: 140px 1fr; gap:12px; align-items:end }
+.q-left{ display:grid; gap:8px }
+
+/* ===== Rangée CTA en 3 pilules alignées ===== */
+.actions-row.ctas{
+  max-width: 1180px;
+  margin: 22px auto 12px;       /* air autour de la rangée */
+  padding: 0 16px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 36px;                    /* espace entre les pilules */
+  align-items: center;
+}
+
+/* Pilules : même hauteur, mêmes coins, typo large */
+.actions-row.ctas .btn-cta{
+  height: 82px;
+  border-radius: 999px;
+  padding: 0 28px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: clamp(18px, 2.4vw, 26px);
+  box-shadow: var(--eg-shadow-btn);
+  background: linear-gradient(90deg, var(--green-600), var(--green-400));
+  color: #fff; border: none;
+}
+
+/* Sur tablettes/mobiles : on empile proprement */
+@media (max-width: 1024px){
+  .actions-row.ctas{ gap: 22px; }
+  .actions-row.ctas .btn-cta{ height: 74px; }
+}
+@media (max-width: 760px){
+  .actions-row.ctas{
+    grid-template-columns: 1fr;
+    max-width: 640px;
+  }
+}
+/* ===== HEADER style “capture” ===== */
+.page-offset{ padding-top:72px; }
+
+/* Rangée d’actions : lien / bouton / lien */
+.login-actions{
+  max-width: 720px;
+  margin: 24px auto 0;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+}
+.login-actions .link:first-child{ justify-self: start; }
+.login-actions .link:last-child{ justify-self: end; }
+
+/* Bouton large, même style que tes gros CTA */
+.btn-primary.big{ padding: 16px 28px; font-size: clamp(18px,2.4vw,26px); border-radius: 999px; }
+
+/* ===== Modal inscription ===== */
+.modal{ position: fixed; inset: 0; display: none; }
+.modal.open{ display: block; }
+.modal__backdrop{ position:absolute; inset:0; background:rgba(0,0,0,.35); backdrop-filter: blur(1px); }
+.modal__content{
+  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+  width: min(720px, 92vw);
+  background:#fff; border:1px solid #e5e7eb; border-radius:18px;
+  box-shadow:0 24px 80px rgba(0,0,0,.18); padding:20px;
+}
+.modal__close{ position:absolute; right:12px; top:8px; background:transparent; border:0; font-size:28px; cursor:pointer }
+.modal__form label{ display:grid; gap:6px; margin:8px 0; font-size:14px; color:#334155 }
+.modal__form input,.modal__form select{
+  height:44px; border-radius:12px; border:1px solid #cbd5e1; padding:0 12px;
+}
+.grid-2{ display:grid; gap:10px; grid-template-columns:1fr 1fr }
+@media (max-width:600px){ .grid-2{ grid-template-columns:1fr } }
+.modal__actions{ display:flex; gap:10px; justify-content:flex-end; margin-top:10px }
+.form-hint{ color:#b91c1c; margin:6px 0 0 }
+
+
