@@ -29,9 +29,15 @@ public class AdminController {
     }
     @Operation(summary = "Promote user to admin ", description = "promote user to admin role")
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/{userId}/role")
+    @PutMapping("/{userId}/role/admin")
     public UserResponse promoteUserToAdmin(@PathVariable @Min(1) long userId) {
         return adminService.promoteToAdmin(userId);
+    }
+    @Operation(summary = "Promote user to Teacher ", description = "promote user to teacher role")
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/{userId}/role/teacher")
+    public UserResponse promoteUserToTeacher(@PathVariable @Min(1) long userId){
+        return adminService.promoteToTeacher(userId);
     }
     @Operation(summary = "Delete user  ", description = "Delete a non-admin user from system ")
     @ResponseStatus(HttpStatus.NO_CONTENT)

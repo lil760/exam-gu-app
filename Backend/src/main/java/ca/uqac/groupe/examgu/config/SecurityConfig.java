@@ -68,6 +68,7 @@ public class SecurityConfig {
                         "/docs/**"
                 ).permitAll()
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                .requestMatchers("/api/questions/**").hasRole("ENSEIGNANT")
                 .anyRequest().authenticated()
         );
 

@@ -40,7 +40,7 @@ public class JwtAuthentificationFilter extends OncePerRequestFilter {
             return;
         }
 
-        // Maintenant on est sûr que authHeader existe et commence par "Bearer "
+
         jwt = authHeader.substring(7);
         userEmail = jwtService.extractUsername(jwt);
 

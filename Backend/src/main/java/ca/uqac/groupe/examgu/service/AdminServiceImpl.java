@@ -40,10 +40,29 @@ throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
         "User does not exist or already an admin");
         }
 List<Authority> authorities = new ArrayList<Authority>();
-        authorities.add(new Authority("ROLE_EMPLOYEE"));
+        authorities.add(new Authority("ROLE_ETUDIANT"));
         authorities.add(new Authority("ROLE_ADMIN"));
         user.get().setAuthorities(authorities);
        User savedUser = userRepository.save(user.get());
+        return convertToUserResponse(savedUser);
+    }
+    @Override
+    @Transactional
+    public UserResponse promoteToTeacher(long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        if (user.getAuthorities().stream().anyMatch(authority ->
+                "ROLE_ENSEIGNANT".equals(authority.getAuthority()))) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is already a teacher");
+        }
+
+        List<Authority> authorities = new ArrayList<>();
+        authorities.add(new Authority("ROLE_ETUDIANT"));
+        authorities.add(new Authority("ROLE_ENSEIGNANT"));
+        user.setAuthorities(authorities);
+
+        User savedUser = userRepository.save(user);
         return convertToUserResponse(savedUser);
     }
 
