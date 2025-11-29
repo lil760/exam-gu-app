@@ -1,10 +1,10 @@
 package ca.uqac.groupe.examgu.controller;
 
-import ca.uqac.groupe.examgu.entity.QCMQuestion;
-import ca.uqac.groupe.examgu.entity.Question;
-import ca.uqac.groupe.examgu.entity.TrueFalseQuestion;
-import ca.uqac.groupe.examgu.request.CreateQcmQuestionRequest;
-import ca.uqac.groupe.examgu.request.CreateTrueFalseQuestionRequest;
+
+import ca.uqac.groupe.examgu.request.QCMQuestionRequest;
+import ca.uqac.groupe.examgu.request.TrueFalseQuestionRequest;
+import ca.uqac.groupe.examgu.response.QCMQuestionResponse;
+import ca.uqac.groupe.examgu.response.TrueFalseQuestionResponse;
 import ca.uqac.groupe.examgu.service.QuestionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -12,10 +12,15 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(
-        name = "Question REST API Endpoints",
-        description = "Operations related to questions (QCM and True/False)"
-)
+
+
+
+import jakarta.validation.constraints.Min;
+
+
+        import java.util.List;
+
+@Tag(name = "Question REST API Endpoints", description = "Operations for managing questions")
 @RestController
 @RequestMapping("/api/questions")
 public class QuestionController {
@@ -26,45 +31,50 @@ public class QuestionController {
         this.questionService = questionService;
     }
 
-    // -------- READ : récupérer une question (QCM ou True/False) par id --------
-
-    @Operation(summary = "Get question by id",
-            description = "Retrieve a question (QCM or True/False) by its id")
+    @Operation(summary = "Get all questions", description = "Fetch all questions ordered by index")
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{id}")
-    public Question getQuestionById(@PathVariable Long id) {
-        return questionService.getQuestionById(id) ;
+    @GetMapping
+    public List<Object> getAllQuestions() {
+        return questionService.getAllQuestions();
     }
 
-    // -------- UPDATE : modifier une question QCM --------
-
-    @Operation(summary = "Update QCM question",
-            description = "Update an existing QCM question")
-    @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/qcm/{id}")
-    public QCMQuestion updateQcmQuestion(@PathVariable Long id,
-                                         @Valid @RequestBody CreateQcmQuestionRequest request) {
-        return questionService.updateQcmQuestion(id, request);
+    @Operation(summary = "Add QCM question", description = "Add a multiple choice question")
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/qcm")
+    public QCMQuestionResponse createQCMQuestion(@Valid @RequestBody QCMQuestionRequest questionRequest) {
+        return questionService.createQCMQuestion(questionRequest);
     }
 
-    // -------- UPDATE : modifier une question Vrai/Faux --------
-
-    @Operation(summary = "Update True/False question",
-            description = "Update an existing True/False question")
+    @Operation(summary = "Update QCM question", description = "Update an existing QCM question")
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/true-false/{id}")
-    public TrueFalseQuestion updateTrueFalseQuestion(@PathVariable Long id,
-                                                     @Valid @RequestBody CreateTrueFalseQuestionRequest request) {
-        return questionService.updateTrueFalseQuestion(id, request);
+    @PutMapping("/qcm/{questionId}")
+    public QCMQuestionResponse updateQCMQuestion(
+            @PathVariable @Min(1) long questionId,
+            @Valid @RequestBody QCMQuestionRequest questionRequest) {
+        return questionService.updateQCMQuestion(questionId, questionRequest);
     }
 
-    // -------- DELETE : supprimer une question (quel que soit le type) --------
+    @Operation(summary = "Add True/False question", description = "Add a true or false question")
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/truefalse")
+    public TrueFalseQuestionResponse createTrueFalseQuestion(
+            @Valid @RequestBody TrueFalseQuestionRequest questionRequest) {
+        return questionService.createTrueFalseQuestion(questionRequest);
+    }
 
-    @Operation(summary = "Delete question",
-            description = "Delete a question by id")
+    @Operation(summary = "Update True/False question", description = "Update an existing True/False question")
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/truefalse/{questionId}")
+    public TrueFalseQuestionResponse updateTrueFalseQuestion(
+            @PathVariable @Min(1) long questionId,
+            @Valid @RequestBody TrueFalseQuestionRequest questionRequest) {
+        return questionService.updateTrueFalseQuestion(questionId, questionRequest);
+    }
+
+    @Operation(summary = "Delete question", description = "Delete a question")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/{id}")
-    public void deleteQuestion(@PathVariable Long id) {
-        questionService.deleteQuestion(id);
+    @DeleteMapping("/{questionId}")
+    public void deleteQuestion(@PathVariable @Min(1) long questionId) {
+        questionService.deleteQuestion(questionId);
     }
 }

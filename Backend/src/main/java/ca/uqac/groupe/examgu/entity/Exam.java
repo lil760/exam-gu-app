@@ -5,6 +5,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
 @Table(name = "exam")
 @Entity
 public class Exam {
@@ -33,7 +38,10 @@ public class Exam {
     @JoinColumn(name = "creator_id", nullable = false)
     private User creator;
 
-    @OneToMany(mappedBy = "exam", cascade = CascadeType.ALL, orphanRemoval = true)
+    // CORRECTION: Relation unidirectionnelle sans mappedBy
+    // Car Question n'a PAS d'attribut exam
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "exam_id") // Exam possède la foreign key dans la table Question
     private List<Question> questions = new ArrayList<>();
 
     public Exam() {}

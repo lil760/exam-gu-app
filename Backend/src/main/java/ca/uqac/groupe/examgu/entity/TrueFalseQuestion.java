@@ -1,16 +1,35 @@
 package ca.uqac.groupe.examgu.entity;
 
+
+
 import jakarta.persistence.*;
 
-@Table(name = "true_false_question")
 @Entity
+@DiscriminatorValue("TRUE_FALSE")
 public class TrueFalseQuestion extends Question {
 
-    @Column(name = "correct_answer", nullable = false)
+    @Column(nullable = false)
     private boolean correctAnswer;
 
-    public TrueFalseQuestion() {}
+    // Default constructor
+    public TrueFalseQuestion() {
+        super();
+    }
 
+    public TrueFalseQuestion(String text, double points, int orderIndex, boolean correctAnswer) {
+        super(text, points, orderIndex, QuestionType.TRUE_FALSE);
+        this.correctAnswer = correctAnswer;
+    }
+
+    @Override
+    public boolean validateAnswer(Object answer) {
+        if (answer instanceof Boolean) {
+            return correctAnswer == (Boolean) answer;
+        }
+        return false;
+    }
+
+    // Getters and Setters
     public boolean isCorrectAnswer() {
         return correctAnswer;
     }

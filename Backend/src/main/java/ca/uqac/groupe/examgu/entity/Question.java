@@ -1,45 +1,83 @@
 package ca.uqac.groupe.examgu.entity;
 
+
+
 import jakarta.persistence.*;
 
-@Table(name = "question")
+@Table(name = "questions")
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "question_discriminator")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "question_type", discriminatorType = DiscriminatorType.STRING)
 public abstract class Question {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
-    private Long id;
+    private long id;
 
-    @Column(nullable = false, length = 300)
+    @Column(nullable = false, length = 1000)
     private String text;
 
     @Column(nullable = false)
     private double points;
 
+    @Column(name = "order_index", nullable = false)
+    private int orderIndex;
+
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false)
     private QuestionType type;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "exam_id", nullable = false)
-    private Exam exam;
-
+    // Default constructor
     public Question() {}
 
-    public Long getId() { return id; }
+    public Question(String text, double points, int orderIndex, QuestionType type) {
+        this.text = text;
+        this.points = points;
+        this.orderIndex = orderIndex;
+        this.type = type;
+    }
 
-    public String getText() { return text; }
-    public void setText(String text) { this.text = text; }
+    public abstract boolean validateAnswer(Object answer);
 
-    public double getPoints() { return points; }
-    public void setPoints(double points) { this.points = points; }
+    // Getters and Setters
+    public long getId() {
+        return id;
+    }
 
-    public QuestionType getType() { return type; }
-    public void setType(QuestionType type) { this.type = type; }
+    public void setId(long id) {
+        this.id = id;
+    }
 
-    public Exam getExam() { return exam; }
-    public void setExam(Exam exam) { this.exam = exam; }
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public double getPoints() {
+        return points;
+    }
+
+    public void setPoints(double points) {
+        this.points = points;
+    }
+
+    public int getOrderIndex() {
+        return orderIndex;
+    }
+
+    public void setOrderIndex(int orderIndex) {
+        this.orderIndex = orderIndex;
+    }
+
+    public QuestionType getType() {
+        return type;
+    }
+
+    public void setType(QuestionType type) {
+        this.type = type;
+    }
 }
