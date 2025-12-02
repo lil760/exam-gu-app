@@ -10,12 +10,14 @@ import ca.uqac.groupe.examgu.request.CreateExamRequest;
 import ca.uqac.groupe.examgu.request.UpdateExamAvailabilityRequest;
 import ca.uqac.groupe.examgu.request.UpdateExamDurationRequest;
 import ca.uqac.groupe.examgu.request.UpdateExamGradingRequest;
+import ca.uqac.groupe.examgu.response.ExamTimeInfoResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -142,4 +144,43 @@ public class ExamServiceImpl implements ExamService {
 
         return examRepository.save(exam);
     }
+
+    @Override
+    public ExamTimeInfoResponse getExamTimeInfo(Long examId) {
+        Exam exam = examRepository.findById(examId)
+                .orElseThrow(() -> new RuntimeException("Exam not found"));
+
+        LocalDateTime now = LocalDateTime.now(); // tu peux utiliser un Clock injectable si tu veux tester
+
+        LocalDateTime start = exam.getStartDateTime();
+        LocalDateTime end = exam.getEndDateTime(); // ou start.plusMinutes(exam.getDurationMinutes())
+
+        boolean notStarted = now.isBefore(start);
+        boolean finished = now.isAfter(end);
+        boolean inProgress = !notStarted && !finished;
+
+        long remainingSeconds;
+        if (finished) {
+            remainingSeconds = 0;
+        } else {
+            remainingSeconds = Duration.between(now, end).getSeconds();
+            if (remainingSeconds < 0) {
+                remainingSeconds = 0;
+            }
+        }
+
+        ExamTimeInfoResponse response = new ExamTimeInfoResponse();
+        response.setExamId(exam.getId());
+        response.setServerNow(now);
+        response.setStartDateTime(start);
+        response.setEndDateTime(end);
+        response.setDurationMinutes(exam.getDurationMinutes());
+        response.setRemainingSeconds(remainingSeconds);
+        response.setNotStarted(notStarted);
+        response.setInProgress(inProgress);
+        response.setFinished(finished);
+
+        return response;
+    }
+
 }

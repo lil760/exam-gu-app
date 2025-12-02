@@ -5,6 +5,7 @@ import ca.uqac.groupe.examgu.request.CreateExamRequest;
 import ca.uqac.groupe.examgu.request.UpdateExamAvailabilityRequest;
 import ca.uqac.groupe.examgu.request.UpdateExamDurationRequest;
 import ca.uqac.groupe.examgu.request.UpdateExamGradingRequest;
+import ca.uqac.groupe.examgu.response.ExamTimeInfoResponse;
 import ca.uqac.groupe.examgu.service.ExamService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -66,4 +67,15 @@ public class ExamController {
                                    @Valid @RequestBody UpdateExamDurationRequest request) {
         return examService.updateExamDuration(id, request);
     }
+
+    @Operation(
+            summary = "Exam time information",
+            description = "Return timing information for an exam (server time, start/end, remaining seconds)"
+    )
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{id}/time-info")
+    public ExamTimeInfoResponse getExamTimeInfo(@PathVariable Long id) {
+        return examService.getExamTimeInfo(id);
+    }
+
 }
