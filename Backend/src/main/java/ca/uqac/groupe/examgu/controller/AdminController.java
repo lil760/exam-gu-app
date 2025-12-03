@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Tag(name = "Admin REST API Endpoints ", description = "Operation related to admin ")
 @RestController
@@ -45,4 +46,30 @@ public class AdminController {
     public void deleteUser(@PathVariable @Min(1) long userId) {
         adminService.deleteNonAdminUser(userId);
     }
+    @Operation(summary = "Update user", description = "Update user information")
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/{userId}")
+    public UserResponse updateUser(@PathVariable @Min(1) long userId, @RequestBody Map<String, String> request) {
+        return adminService.updateUser(
+                userId,
+                request.get("firstName"),
+                request.get("lastName"),
+                request.get("email"),
+                request.get("password"),
+                request.get("role")
+        );
+    }
+    @Operation(summary = "Create user", description = "Create a new user in the system")
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping
+    public UserResponse createUser(@RequestBody Map<String, String> request) {
+        return adminService.createUser(
+                request.get("firstName"),
+                request.get("lastName"),
+                request.get("email"),
+                request.get("password"),
+                request.get("role")
+        );
+    }
+
 }
