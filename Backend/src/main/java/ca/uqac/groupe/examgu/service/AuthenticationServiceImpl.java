@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
 
@@ -53,9 +55,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                         request.getPassword())
         );
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new IllegalArgumentException("Invalid email or password "));
-
+        List<String> authorities = user.getAuthorities()
+                .stream()
+                .map(a -> a.getAuthority()) // retourne "ROLE_ETUDIANT" etc.
+                .toList();
         String jwtTokken = jwtService.generateToken(new HashMap<>(), user);
-        return new AuthenticationResponse(jwtTokken);
+        return new AuthenticationResponse(jwtTokken,authorities);
     }
 
     private boolean isEmailTaken(String email) {
