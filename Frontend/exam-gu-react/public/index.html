@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EXAM-GU </title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="preconnect" href="https://fontspy.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <main class="card" role="main" aria-labelledby="titre">
+    <!-- Logo -->
+    <div class="brand brand--floating" aria-hidden="true">
+        <img src="./assets/logo.png" alt="">
+      </div>
+
+      <div id="root"></div>
+      <script type="module" src="/src/index.jsx"></script>
+    </body>
+  
+      
+      
+
+    <h1 id="titre">Connexion </h1>
+
+    <form id="loginForm" novalidate>
+      <div class="field">
+        <label class="label" for="email">Identifiant ou adresse courriel</label>
+        <input class="input" id="email" name="email" type="email" autocomplete="username"
+               placeholder="enseignant@exemple.com" required />
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="M4 6h16v12H4z"></path><path d="M4 7l8 6 8-6"></path>
+        </svg>
+      </div>
+
+      <div class="field">
+        <label class="label" for="password">Mot de passe</label>
+        <input class="input" id="password" name="password" type="password" autocomplete="current-password"
+               placeholder="••••••••" minlength="6" required />
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <rect x="4" y="10" width="16" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+        </svg>
+      </div>
+
+      <div class="login-actions">
+        <a href="#" id="openSignup" class="link">Créer un compte</a>
+        <button type="submit" class="btn-primary big">Se connecter</button>
+        <a class="link" href="./reset.html">Mot de passe oublié ?</a>
+      </div>
+    </form>
+      <!-- MODAL INSCRIPTION -->
+      <div class="modal" id="signupModal" aria-hidden="true" role="dialog" aria-modal="true">
+        <div class="modal__backdrop" id="signupBackdrop"></div>
+        <div class="modal__content" role="document" aria-labelledby="signupTitle">
+          <button class="modal__close" id="signupClose" aria-label="Fermer"></button>
+          <h2 id="signupTitle" style="margin-top:0">Créer un compte</h2>
+      
+          <form id="signupForm" class="modal__form" novalidate>
+            <div class="grid-2">
+              <label>Prénom
+                <input type="text" id="suFirst" required>
+              </label>
+              <label>Nom
+                <input type="text" id="suLast" required>
+              </label>
+            </div>
+      
+            <label>Courriel
+              <input type="email" id="suEmail" required>
+            </label>
+      
+            <label>Identifiant (pseudo)
+              <input type="text" id="suUser" required>
+            </label>
+      
+            <div class="grid-2">
+              <label>Mot de passe
+                <input type="password" id="suPass" required minlength="6">
+              </label>
+              <label>Confirmer le mot de passe
+                <input type="password" id="suPass2" required minlength="6">
+              </label>
+            </div>
+      
+            
+      
+            <p id="suError" class="form-hint" hidden></p>
+      
+            <div class="modal__actions">
+              <button type="submit" class="btn-primary">Créer le compte</button>
+              <button type="button" class="btn-secondary" id="signupCancel">Annuler</button>
+            </div>
+          </form>
+        </div>
+      </div>      
+    
+  </main>
+
+  <script type="module">
+    import { apiLogin, getUser } from '../js/api.js';
+  
+    const loginForm = document.getElementById('loginForm');
+    const submitBtn = loginForm.querySelector('button[type=submit]');
+  
+    loginForm.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      submitBtn.disabled = true;
+      const original = submitBtn.textContent;
+      submitBtn.textContent = 'Connexion...';
+  
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+  
+      try{
+        await apiLogin(email, password);
+        const user = getUser();
+        window.location.href = './enseignant_accueil.html';
+      }catch(err){
+        alert('Échec de connexion : ' + (err.message || 'Erreur'));
+      }finally{
+        submitBtn.disabled = false;
+        submitBtn.textContent = original;
+      }
+    });
+  
+    // ====== MODAL "Créer un compte" ======
+    const modal     = document.getElementById('signupModal');
+    const openLink  = document.getElementById('openSignup');
+    const backdrop  = document.getElementById('signupBackdrop');
+    const closeBtn  = document.getElementById('signupClose');
+    const cancelBtn = document.getElementById('signupCancel');
+    const suForm    = document.getElementById('signupForm');
+    const err       = document.getElementById('suError');
+  
+    function openModal(){
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden','false');
+      document.getElementById('suFirst')?.focus();
+    }
+    function closeModal(){
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden','true');
+      err.hidden = true; err.textContent='';
+    }
+  
+    openLink?.addEventListener('click', e => { 
+      e.preventDefault(); 
+      openModal(); 
+    });
+    [backdrop, closeBtn, cancelBtn].forEach(el => el?.addEventListener('click', closeModal));
+    document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+  
+    suForm?.addEventListener('submit', e => {
+      e.preventDefault();
+      // validations + TODO: appel API d’inscription
+      alert('Compte créé (démo)');
+      closeModal();
+    });
+  </script>
+  
+  
+</body>
+</html>
+
+    
