@@ -1,5 +1,6 @@
 package ca.uqac.groupe.examgu.service;
 
+import ca.uqac.groupe.examgu.request.RegisterRequest;
 import ca.uqac.groupe.examgu.response.UserResponse;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,7 +11,7 @@ public interface AdminService {
     UserResponse promoteToAdmin(long userId);
 UserResponse promoteToTeacher(long userId);
     void deleteNonAdminUser(long userId);
-    UserResponse createUser(String firstName, String lastName, String email, String password, String role);
-    UserResponse updateUser(long userId, String firstName, String lastName, String email, String password, String role);
+    UserResponse createUser(RegisterRequest request);
+    UserResponse updateUser(long userId, RegisterRequest request);
 
 }
