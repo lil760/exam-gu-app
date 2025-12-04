@@ -13,6 +13,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(
         name = "Exam REST API Endpoints",
         description = "Operations related to exams"
@@ -77,5 +79,19 @@ public class ExamController {
     public ExamTimeInfoResponse getExamTimeInfo(@PathVariable Long id) {
         return examService.getExamTimeInfo(id);
     }
+    @Operation(summary = "Get available exams for student",
+            description = "Retrieve list of available exams for a student")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/student/{studentId}/available")
+    public List<Exam> getAvailableExamsForStudent(@PathVariable Long studentId) {
+        return examService.getAvailableExamsForStudent(studentId);
+    }
 
+    @Operation(summary = "Get exam result for student",
+            description = "Retrieve exam result for a specific student")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{examId}/student/{studentId}/result")
+    public Exam getExamResultForStudent(@PathVariable Long examId, @PathVariable Long studentId) {
+        return examService.getExamResultForStudent(examId, studentId);
+    }
 }

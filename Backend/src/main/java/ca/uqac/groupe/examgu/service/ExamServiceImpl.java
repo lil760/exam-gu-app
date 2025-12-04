@@ -182,5 +182,33 @@ public class ExamServiceImpl implements ExamService {
 
         return response;
     }
+    @Override
+    @Transactional(readOnly = true)
+    public List<Exam> getAvailableExamsForStudent(Long studentId) {
+        User student = userRepository.findById(studentId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found"));
 
+        LocalDateTime now = LocalDateTime.now();
+
+        return examRepository.findAll().stream()
+                .filter(exam -> !now.isBefore(exam.getStartDateTime()) && !now.isAfter(exam.getEndDateTime()))
+                .toList();
+    }
+    @Override
+    @Transactional(readOnly = true)
+    public Exam getExamResultForStudent(Long examId, Long studentId) {
+        User student = userRepository.findById(studentId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found"));
+
+        Exam exam = examRepository.findById(examId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Exam not found"));
+
+        LocalDateTime now = LocalDateTime.now();
+        if (now.isBefore(exam.getEndDateTime())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Exam results are not yet available");
+        }
+
+        return exam;
+    }
 }
