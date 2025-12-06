@@ -3,6 +3,7 @@ package ca.uqac.groupe.examgu.service;
 import ca.uqac.groupe.examgu.entity.Authority;
 import ca.uqac.groupe.examgu.entity.User;
 import ca.uqac.groupe.examgu.repository.UserRepository;
+import ca.uqac.groupe.examgu.request.RegisterRequest;
 import ca.uqac.groupe.examgu.response.UserResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -89,81 +90,56 @@ return new UserResponse(user.getId(),
 }
     @Override
     @Transactional
-    public UserResponse createUser(String firstName, String lastName, String email, String password, String role) {
-        Optional<User> existingUser = userRepository.findByEmail(email);
-
-        if(existingUser.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User with this email already exists");
+    public UserResponse createUser(RegisterRequest request) {
+        if (isEmailTaken(request.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email is already taken");
         }
 
-        User user = new User();
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        user.setPassword(passwordEncoder.encode(password));
+        User user = buildUserForAdmin(request);
+        User savedUser = userRepository.save(user);
+        return convertToUserResponse(savedUser);
+    }
 
-        List<Authority> authorities = new ArrayList<Authority>();
-        authorities.add(new Authority("ROLE_ETUDIANT"));
+    @Override
+    @Transactional
+    public UserResponse updateUser(long userId, RegisterRequest request) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
-        if (role != null) {
-            if ("ENSEIGNANT".equals(role)) {
-                authorities.add(new Authority("ROLE_ENSEIGNANT"));
-            } else if ("ADMIN".equals(role)) {
-                authorities.add(new Authority("ROLE_ADMIN"));
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+
+        if (!request.getEmail().equals(user.getEmail())) {
+            if (isEmailTaken(request.getEmail())) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already used by another user");
             }
+            user.setEmail(request.getEmail());
         }
 
-        user.setAuthorities(authorities);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         User savedUser = userRepository.save(user);
         return convertToUserResponse(savedUser);
     }
-    @Override
-    @Transactional
-    public UserResponse updateUser(long userId, String firstName, String lastName, String email, String password, String role) {
-        Optional<User> userOpt = userRepository.findById(userId);
 
-        if(userOpt.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
-        }
+    private boolean isEmailTaken(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
 
-        User user = userOpt.get();
+    private User buildUserForAdmin(RegisterRequest request) {
+        User user = new User();
+        user.setId(0);
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        if (firstName != null) {
-            user.setFirstName(firstName);
-        }
+        // Les utilisateurs créés par l'admin sont toujours des étudiants par défaut
+        List<Authority> authorities = new ArrayList<>();
+        authorities.add(new Authority("ROLE_ETUDIANT"));
+        user.setAuthorities(authorities);
 
-        if (lastName != null) {
-            user.setLastName(lastName);
-        }
-
-        if (email != null && !email.equals(user.getEmail())) {
-            Optional<User> existingUser = userRepository.findByEmail(email);
-            if(existingUser.isPresent()) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already used by another user");
-            }
-            user.setEmail(email);
-        }
-
-        if (password != null) {
-            user.setPassword(passwordEncoder.encode(password));
-        }
-
-        if (role != null) {
-            List<Authority> authorities = new ArrayList<Authority>();
-            authorities.add(new Authority("ROLE_ETUDIANT"));
-
-            if ("ENSEIGNANT".equals(role)) {
-                authorities.add(new Authority("ROLE_ENSEIGNANT"));
-            } else if ("ADMIN".equals(role)) {
-                authorities.add(new Authority("ROLE_ADMIN"));
-            }
-
-            user.setAuthorities(authorities);
-        }
-
-        User savedUser = userRepository.save(user);
-        return convertToUserResponse(savedUser);
+        return user;
     }
 
 }
