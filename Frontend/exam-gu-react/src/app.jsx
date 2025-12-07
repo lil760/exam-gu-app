@@ -57,6 +57,12 @@ export default function App() {
     setUser(userData);
     const roles = userData.authorities || [];
 
+    console.log("ROLES REÇUS :", userData.authorities);
+    console.log("Données userData reçues :", userData);
+    console.log("authorities = ", userData.authorities);
+    console.log("type =", typeof userData.authorities[0]);
+
+
     // Sauvegarde locale
     localStorage.setItem("currentUser", JSON.stringify(userData));
 

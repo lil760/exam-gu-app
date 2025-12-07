@@ -61,7 +61,7 @@ export const api = {
         token: data.token,
         user: {
           email,
-          authorities: data.authorities?.map(a => a.authority) || [],
+          authorities: Array.isArray(data.authorities) ? data.authorities : [],
           role: data.authorities?.[0]?.authority || "ROLE_ETUDIANT"
         }
       };
