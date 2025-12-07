@@ -29,7 +29,7 @@ public class ExamController {
         this.examService = examService;
     }
 
-    @Operation(summary = "Create exam", description = "Create a new exam")
+    @Operation(summary = "Create exam", description = "Create a new exam with optional questions")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public Exam createExam(@Valid @RequestBody CreateExamRequest request) {
@@ -41,6 +41,24 @@ public class ExamController {
     @GetMapping("/{id}")
     public Exam getExamById(@PathVariable Long id) {
         return examService.getExamById(id);
+    }
+
+    @Operation(summary = "Add questions to exam",
+            description = "Add a list of questions to an existing exam")
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/{id}/questions")
+    public Exam addQuestionsToExam(@PathVariable Long id,
+                                   @RequestBody List<Long> questionIds) {
+        return examService.addQuestionsToExam(id, questionIds);
+    }
+
+    @Operation(summary = "Remove question from exam",
+            description = "Remove a specific question from an exam")
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/{examId}/questions/{questionId}")
+    public Exam removeQuestionFromExam(@PathVariable Long examId,
+                                       @PathVariable Long questionId) {
+        return examService.removeQuestionFromExam(examId, questionId);
     }
 
     @Operation(summary = "Update exam grading scheme",
@@ -79,6 +97,7 @@ public class ExamController {
     public ExamTimeInfoResponse getExamTimeInfo(@PathVariable Long id) {
         return examService.getExamTimeInfo(id);
     }
+
     @Operation(summary = "Get available exams for student",
             description = "Retrieve list of available exams for a student")
     @ResponseStatus(HttpStatus.OK)

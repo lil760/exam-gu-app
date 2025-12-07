@@ -18,4 +18,6 @@ public interface ExamService {
     ExamTimeInfoResponse getExamTimeInfo(Long examId);
     List<Exam> getAvailableExamsForStudent(Long studentId);
     Exam getExamResultForStudent(Long examId, Long studentId);
+    Exam addQuestionsToExam(Long examId, List<Long> questionIds);
+    Exam removeQuestionFromExam(Long examId, Long questionId);
 }

@@ -18,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -58,6 +59,60 @@ public class ExamServiceImpl implements ExamService {
         exam.setDurationMinutes(request.getDurationMinutes());
         exam.setCreator(teacher);
 
+        // Ajouter les questions si elles sont fournies
+        if (request.getQuestionIds() != null && !request.getQuestionIds().isEmpty()) {
+            List<Question> questions = new ArrayList<>();
+            for (Long questionId : request.getQuestionIds()) {
+                Question question = questionRepository.findById(questionId)
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                "Question not found: " + questionId));
+                questions.add(question);
+            }
+            exam.setQuestions(questions);
+        }
+
+        return examRepository.save(exam);
+    }
+
+    @Override
+    @Transactional
+    public Exam addQuestionsToExam(Long examId, List<Long> questionIds) {
+        Exam exam = examRepository.findById(examId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Exam not found"));
+
+        if (questionIds == null || questionIds.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Question IDs cannot be empty");
+        }
+
+        for (Long questionId : questionIds) {
+            Question question = questionRepository.findById(questionId)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                            "Question not found: " + questionId));
+
+            // Éviter les doublons
+            if (!exam.getQuestions().contains(question)) {
+                exam.getQuestions().add(question);
+            }
+        }
+
+        return examRepository.save(exam);
+    }
+
+    @Override
+    @Transactional
+    public Exam removeQuestionFromExam(Long examId, Long questionId) {
+        Exam exam = examRepository.findById(examId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Exam not found"));
+
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Question not found"));
+
+        if (!exam.getQuestions().contains(question)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Question does not belong to this exam");
+        }
+
+        exam.getQuestions().remove(question);
         return examRepository.save(exam);
     }
 
@@ -83,7 +138,6 @@ public class ExamServiceImpl implements ExamService {
                             "Question not found: " + qp.getQuestionId()));
 
             // Sécurité : vérifier que la question appartient bien à cet exam
-            // Puisque Question n'a pas d'attribut exam, on vérifie via la liste de l'exam
             if (!examQuestions.contains(question)) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                         "Question " + qp.getQuestionId() + " does not belong to exam " + examId);
@@ -146,14 +200,15 @@ public class ExamServiceImpl implements ExamService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ExamTimeInfoResponse getExamTimeInfo(Long examId) {
         Exam exam = examRepository.findById(examId)
-                .orElseThrow(() -> new RuntimeException("Exam not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Exam not found"));
 
-        LocalDateTime now = LocalDateTime.now(); // tu peux utiliser un Clock injectable si tu veux tester
+        LocalDateTime now = LocalDateTime.now();
 
         LocalDateTime start = exam.getStartDateTime();
-        LocalDateTime end = exam.getEndDateTime(); // ou start.plusMinutes(exam.getDurationMinutes())
+        LocalDateTime end = exam.getEndDateTime();
 
         boolean notStarted = now.isBefore(start);
         boolean finished = now.isAfter(end);
@@ -182,6 +237,7 @@ public class ExamServiceImpl implements ExamService {
 
         return response;
     }
+
     @Override
     @Transactional(readOnly = true)
     public List<Exam> getAvailableExamsForStudent(Long studentId) {
@@ -194,6 +250,7 @@ public class ExamServiceImpl implements ExamService {
                 .filter(exam -> !now.isBefore(exam.getStartDateTime()) && !now.isAfter(exam.getEndDateTime()))
                 .toList();
     }
+
     @Override
     @Transactional(readOnly = true)
     public Exam getExamResultForStudent(Long examId, Long studentId) {
