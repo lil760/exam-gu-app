@@ -1,7 +1,5 @@
 package ca.uqac.groupe.examgu.entity;
 
-
-
 import jakarta.persistence.*;
 
 @Table(name = "questions")
@@ -28,7 +26,12 @@ public abstract class Question {
     @Column(nullable = false)
     private QuestionType type;
 
-    // Default constructor
+    @Column(name = "multiple_answers_allowed", nullable = false)
+    private boolean multipleAnswersAllowed = false;
+
+    @Column(name = "correct_answer", nullable = false)
+    private boolean correctAnswer = false;
+
     public Question() {}
 
     public Question(String text, double points, int orderIndex, QuestionType type) {
@@ -40,7 +43,6 @@ public abstract class Question {
 
     public abstract boolean validateAnswer(Object answer);
 
-    // Getters and Setters
     public long getId() {
         return id;
     }
@@ -79,5 +81,21 @@ public abstract class Question {
 
     public void setType(QuestionType type) {
         this.type = type;
+    }
+
+    public boolean isMultipleAnswersAllowed() {
+        return multipleAnswersAllowed;
+    }
+
+    public void setMultipleAnswersAllowed(boolean multipleAnswersAllowed) {
+        this.multipleAnswersAllowed = multipleAnswersAllowed;
+    }
+
+    public boolean isCorrectAnswer() {
+        return correctAnswer;
+    }
+
+    public void setCorrectAnswer(boolean correctAnswer) {
+        this.correctAnswer = correctAnswer;
     }
 }

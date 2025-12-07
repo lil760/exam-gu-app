@@ -1,4 +1,3 @@
-
 package ca.uqac.groupe.examgu.entity;
 
 import jakarta.persistence.*;
@@ -9,20 +8,17 @@ import java.util.List;
 @DiscriminatorValue("QCM")
 public class QCMQuestion extends Question {
 
-    @Column(nullable = false)
-    private boolean multipleAnswersAllowed;
-
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Choice> choices = new ArrayList<>();
 
-    // Default constructor
     public QCMQuestion() {
         super();
     }
 
     public QCMQuestion(String text, double points, int orderIndex, boolean multipleAnswersAllowed) {
         super(text, points, orderIndex, QuestionType.QCM);
-        this.multipleAnswersAllowed = multipleAnswersAllowed;
+        setMultipleAnswersAllowed(multipleAnswersAllowed);
+        setCorrectAnswer(false);
     }
 
     @Override
@@ -40,15 +36,6 @@ public class QCMQuestion extends Question {
                     && selectedChoiceIds.containsAll(correctChoiceIds);
         }
         return false;
-    }
-
-    // Getters and Setters
-    public boolean isMultipleAnswersAllowed() {
-        return multipleAnswersAllowed;
-    }
-
-    public void setMultipleAnswersAllowed(boolean multipleAnswersAllowed) {
-        this.multipleAnswersAllowed = multipleAnswersAllowed;
     }
 
     public List<Choice> getChoices() {
