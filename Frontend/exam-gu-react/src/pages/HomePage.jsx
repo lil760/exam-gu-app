@@ -61,6 +61,7 @@ export default function HomePage({ user, onLogout, onNavigate }) {
         user={user}
         onLogout={onLogout}
         onNavigate={onNavigate}
+        currentPage="home"
         showSearch={true}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
