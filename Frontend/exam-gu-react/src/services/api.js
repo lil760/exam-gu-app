@@ -42,7 +42,8 @@ export const api = {
         user: {
           email,
           authorities: data.authorities || [],
-          role: data.authorities?.[0] || "USER"
+          role: data.authorities?.[0] || "ROLE_STUDENT"
+
         }
       };
 
@@ -155,5 +156,110 @@ export const api = {
     }
 
     return true;
+  },
+
+
+
+// ===== FONCTIONS ÉTUDIANTS =====
+
+async getAvailableExams() {
+  const token = localStorage.getItem('token');
+  console.log('🔵 Récupération examens disponibles');
+
+  const res = await fetch(`/api/student/exams/available`, {
+    headers: { 
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json'
+    }
+  });
+
+  if (!res.ok) {
+    console.error('❌ Erreur chargement examens disponibles:', res.status);
+    throw new Error('Erreur chargement examens disponibles');
   }
+
+  return await res.json();
+},
+
+async registerForExam(examId) {
+  const token = localStorage.getItem('token');
+  console.log('🔵 Inscription à l\'examen:', examId);
+
+  const res = await fetch(`/api/student/exams/${examId}/register`, {
+    method: 'POST',
+    headers: { 
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json'
+    }
+  });
+
+  if (!res.ok) {
+    console.error('❌ Erreur inscription examen:', res.status);
+    throw new Error('Erreur inscription à l\'examen');
+  }
+
+  return await res.json();
+},
+
+async startExam(examId) {
+  const token = localStorage.getItem('token');
+  console.log('🔵 Démarrage de l\'examen:', examId);
+
+  const res = await fetch(`/api/student/exams/${examId}/start`, {
+    method: 'POST',
+    headers: { 
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json'
+    }
+  });
+
+  if (!res.ok) {
+    console.error('❌ Erreur démarrage examen:', res.status);
+    throw new Error('Erreur démarrage de l\'examen');
+  }
+
+  return await res.json();
+},
+async getExamForStudent(examId) {
+  const token = localStorage.getItem('token');
+  console.log('🔵 Chargement de l\'examen:', examId);
+
+  const res = await fetch(`/api/student/exams/${examId}/take`, {
+    headers: { 
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json'
+    }
+  });
+
+  if (!res.ok) {
+    console.error('❌ Erreur chargement examen:', res.status);
+    throw new Error('Erreur chargement de l\'examen');
+  }
+
+  return await res.json();
+},
+
+async submitExamAnswers(examId, answers) {
+  const token = localStorage.getItem('token');
+  console.log('🔵 Soumission des réponses pour l\'examen:', examId);
+
+  const res = await fetch(`/api/student/exams/${examId}/submit`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify({ answers })
+  });
+
+  if (!res.ok) {
+    console.error('❌ Erreur soumission:', res.status);
+    throw new Error('Erreur lors de la soumission');
+  }
+
+  return await res.json();
+}
+
+
 };

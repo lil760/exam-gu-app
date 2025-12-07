@@ -56,7 +56,7 @@ export default function CreateExamPage({ user, onLogout, onNavigate }) {
 
   return (
     <div className="page-with-topbar page-offset">
-      <Topbar user={user} onLogout={onLogout} onNavigate={onNavigate} />
+      <Topbar user={user} onLogout={onLogout} onNavigate={onNavigate} currentPage="create-exam" />
 
       <main className="wrap">
         <h1 className="exam-title-main">Informations de l'examen</h1>
