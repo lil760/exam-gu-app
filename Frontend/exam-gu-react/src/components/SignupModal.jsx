@@ -1,30 +1,54 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { api } from '../services/api';
 
 export default function SignupModal({ onClose }) {
+  const [error, setError] = useState('');
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = {
-      firstName: e.target.firstName.value,
-      lastName: e.target.lastName.value,
-      email: e.target.email.value,
-      username: e.target.username.value,
-      password: e.target.password.value,
-      password2: e.target.password2.value,
-      role: e.target.role.value
-    };
+    setError('');
 
-    if (formData.password !== formData.password2) {
-      alert('Les mots de passe ne correspondent pas');
+    const firstName = e.target.firstName.value.trim();
+    const lastName = e.target.lastName.value.trim();
+    const email = e.target.email.value.trim();
+    const password = e.target.password.value;
+    const password2 = e.target.password2.value;
+
+    // Validations côté client
+    if (firstName.length < 3) {
+      setError('Le prénom doit contenir au moins 3 caractères');
       return;
     }
 
+    if (lastName.length < 3) {
+      setError('Le nom doit contenir au moins 3 caractères');
+      return;
+    }
+
+    if (password.length < 8) {
+      setError('Le mot de passe doit contenir au moins 8 caractères');
+      return;
+    }
+
+    if (password !== password2) {
+      setError('Les mots de passe ne correspondent pas');
+      return;
+    }
+
+    const formData = {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password
+    };
+
     try {
       await api.register(formData);
-      alert('Compte créé avec succès !');
+      alert('Compte créé avec succès ! Vous pouvez maintenant vous connecter.');
       onClose();
     } catch (err) {
-      alert('Erreur lors de la création du compte: ' + err.message);
+      console.error('Erreur inscription:', err);
+      setError(err.message || 'Erreur lors de la création du compte');
     }
   };
 
@@ -38,12 +62,24 @@ export default function SignupModal({ onClose }) {
         <form onSubmit={handleSubmit} className="modal__form">
           <div className="grid-2">
             <label>
-              Prénom
-              <input type="text" name="firstName" required />
+              Prénom (min. 3 caractères)
+              <input 
+                type="text" 
+                name="firstName" 
+                required 
+                minLength="3"
+                maxLength="30"
+              />
             </label>
             <label>
-              Nom
-              <input type="text" name="lastName" required />
+              Nom (min. 3 caractères)
+              <input 
+                type="text" 
+                name="lastName" 
+                required 
+                minLength="3"
+                maxLength="30"
+              />
             </label>
           </div>
 
@@ -52,23 +88,34 @@ export default function SignupModal({ onClose }) {
             <input type="email" name="email" required />
           </label>
 
-          <label>
-            Identifiant (pseudo)
-            <input type="text" name="username" required />
-          </label>
-
           <div className="grid-2">
             <label>
-              Mot de passe
-              <input type="password" name="password" required minLength="6" />
+              Mot de passe (min. 8 caractères)
+              <input 
+                type="password" 
+                name="password" 
+                required 
+                minLength="8" 
+                maxLength="30"
+              />
             </label>
             <label>
               Confirmer le mot de passe
-              <input type="password" name="password2" required minLength="6" />
+              <input 
+                type="password" 
+                name="password2" 
+                required 
+                minLength="8" 
+                maxLength="30"
+              />
             </label>
           </div>
 
-          
+          {error && (
+            <p className="form-hint" style={{ display: 'block' }}>
+              {error}
+            </p>
+          )}
 
           <div className="modal__actions">
             <button type="submit" className="btn-primary">Créer le compte</button>

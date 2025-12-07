@@ -1,7 +1,20 @@
 import React, { useState } from 'react';
 
-export default function Topbar({ user, onLogout, onNavigate, showSearch = false, searchQuery, onSearchChange }) {
+export default function Topbar({ user, onLogout, onNavigate, showSearch = false, searchQuery = '', onSearchChange = () => {} }) {
   const [showUserMenu, setShowUserMenu] = useState(false);
+
+  // Extraire les initiales de l'email
+  const getInitials = (email) => {
+    if (!email) return 'U';
+    const parts = email.split('@')[0];
+    return parts.substring(0, 2).toUpperCase();
+  };
+
+  // Extraire le nom d'utilisateur de l'email
+  const getUserName = (email) => {
+    if (!email) return 'Utilisateur';
+    return email.split('@')[0];
+  };
 
   return (
     <header className="topbar">
@@ -32,9 +45,11 @@ export default function Topbar({ user, onLogout, onNavigate, showSearch = false,
             className="user-btn"
             onClick={() => setShowUserMenu(!showUserMenu)}
           >
-            <span>Bonjour, <strong>{user?.firstName || user?.email || 'Utilisateur'}</strong></span>
+            <span>
+              Bonjour, <strong>{getUserName(user?.email)}</strong>
+            </span>
             <span className="avatar">
-              {(user?.firstName?.[0] || 'U').toUpperCase()}
+              {getInitials(user?.email)}
             </span>
           </button>
           {showUserMenu && (
