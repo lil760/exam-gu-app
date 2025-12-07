@@ -7,16 +7,14 @@ export default function Topbar({
   showSearch = false,
   searchQuery = '',
   onSearchChange = () => {},
-  currentPage // <-- NOUVEAU : on reçoit la page courante
+  currentPage
 }) {
   const [showUserMenu, setShowUserMenu] = useState(false);
 
-  // Détection rôle étudiant
   const isStudent =
     user?.authorities?.includes("ROLE_STUDENT") ||
     user?.role === "ROLE_STUDENT";
 
-  // Redirection intelligente
   const goHome = () => {
     if (isStudent) {
       onNavigate("student-home");
@@ -25,14 +23,12 @@ export default function Topbar({
     }
   };
 
-  // Masquer le bouton Accueil sur student-home
+  // Masquer *uniquement* le bouton Accueil sur student-home
   const hideHomeButton = isStudent && currentPage === "student-home";
 
-  // Extraire les initiales
   const getInitials = (email) => {
     if (!email) return 'U';
-    const parts = email.split('@')[0];
-    return parts.substring(0, 2).toUpperCase();
+    return email.split('@')[0].substring(0, 2).toUpperCase();
   };
 
   const getUserName = (email) => {
@@ -44,14 +40,12 @@ export default function Topbar({
     <header className="topbar">
       <div className="topbar-left">
 
-        {/* Logo → renvoie vers la bonne page selon rôle */}
-        {!hideHomeButton && (
-          <div className="brand-circle" onClick={goHome}>
-            <img src="/assets/logo.png" alt="EXAM GU" />
-          </div>
-        )}
+        {/* Logo → doit TOUJOURS apparaître */}
+        <div className="brand-circle" onClick={goHome}>
+          <img src="/assets/logo.png" alt="EXAM GU" />
+        </div>
 
-        {/* Lien Accueil → disparaît sur student-home */}
+        {/* Bouton Accueil → seulement si pas sur student-home */}
         {!hideHomeButton && (
           <div className="home-link" onClick={goHome}>
             <span className="icon-home"></span>
@@ -62,6 +56,7 @@ export default function Topbar({
       </div>
 
       <div className="topbar-right">
+
         {showSearch && (
           <div className="search">
             <input
@@ -74,16 +69,9 @@ export default function Topbar({
         )}
 
         <div className="user-menu">
-          <button
-            className="user-btn"
-            onClick={() => setShowUserMenu(!showUserMenu)}
-          >
-            <span>
-              Bonjour, <strong>{getUserName(user?.email)}</strong>
-            </span>
-            <span className="avatar">
-              {getInitials(user?.email)}
-            </span>
+          <button className="user-btn" onClick={() => setShowUserMenu(!showUserMenu)}>
+            <span>Bonjour, <strong>{getUserName(user?.email)}</strong></span>
+            <span className="avatar">{getInitials(user?.email)}</span>
           </button>
 
           {showUserMenu && (
