@@ -32,7 +32,7 @@ private final UserRepository userRepository;
         return StreamSupport.stream(userRepository.findAll().spliterator(),false)
                 .map(this::convertToUserResponse).toList();
     }
-@Transactional
+@Transactional(readOnly = true)
     @Override
     public UserResponse promoteToAdmin(long userId) {
         Optional<User> user1 = userRepository.findById(userId);
