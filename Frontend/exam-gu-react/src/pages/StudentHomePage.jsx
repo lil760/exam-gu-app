@@ -1,21 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import Topbar from '../components/Topbar';
-import { api } from '../services/api';
+import React, { useState, useEffect } from "react";
+import Topbar from "../components/Topbar";
+import { api } from "../services/api";
 
 export default function StudentHomePage({ user, onLogout, onNavigate, onStartExam }) {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [exams, setExams] = useState([]);
 
-  // Charger les examens du backend
+  // Charger les examens disponibles pour cet étudiant
   useEffect(() => {
-    api.getAvailableExams()
+    if (!user || !user.id) {
+      console.error("❌ Impossible de charger les examens : user.id manquant");
+      return;
+    }
+
+    console.log("👤 Chargement des examens pour étudiant ID:", user.id);
+
+    api.getStudentAvailableExams(user.id)
       .then((data) => {
         console.log("📘 Exams reçus du backend:", data);
         setExams(data);
       })
       .catch((err) => console.error("Erreur chargement examens:", err));
-  }, []);
+  }, [user]);
 
+  // Filtrer selon la recherche
   const filteredExams = exams.filter((exam) =>
     exam.title?.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -47,6 +55,10 @@ export default function StudentHomePage({ user, onLogout, onNavigate, onStartExa
         </div>
 
         <section className="student-exam-list">
+          {filteredExams.length === 0 && (
+            <p className="no-exams">Aucun examen disponible pour le moment.</p>
+          )}
+
           {filteredExams.map((exam) => {
             const now = new Date();
             const start = new Date(exam.startDateTime);
@@ -83,12 +95,11 @@ export default function StudentHomePage({ user, onLogout, onNavigate, onStartExa
         <div className="student-register-section">
           <button
             className="student-btn-register"
-            onClick={() => onNavigate('student-register')}
+            onClick={() => onNavigate("student-register")}
           >
             S'inscrire
           </button>
         </div>
-
       </main>
     </div>
   );

@@ -6,48 +6,101 @@ import ResetPasswordPage from './pages/ResetPasswordPage';
 import StudentHomePage from './pages/StudentHomePage';
 import StudentRegisterPage from './pages/StudentRegisterPage';
 import ExamTakingPage from './pages/ExamTakingPage';
+import AdminDashboardPage from './pages/AdminDashboardPage';
+import AdminUsersPage from './pages/AdminUsersPage';
+import AdminLoginHistoryPage from './pages/AdminLoginHistoryPage';
+import ChooseRolePage from './pages/ChooseRolePage';
 import './styles.css';
 
 export default function App() {
+
   const [currentPage, setCurrentPage] = useState('login');
   const [user, setUser] = useState(null);
   const [selectedExamId, setSelectedExamId] = useState(null);
+  const [selectedRole, setSelectedRole] = useState(null);
 
-  // ⬅️ Vérifier si utilisateur déjà connecté
+  // ---------------------------------------------------------
+  // 🔥 Vérifier si utilisateur déjà connecté
+  // ---------------------------------------------------------
   useEffect(() => {
+
+      const chosen = localStorage.getItem("selectedRole");
+  if (chosen) {
+    if (chosen === "ROLE_ADMIN") setCurrentPage("admin-dashboard");
+    else if (chosen === "ROLE_ENSEIGNANT") setCurrentPage("home");
+    else setCurrentPage("student-home");
+    return;
+}
+
+
     const token = localStorage.getItem('token');
     const savedUser = localStorage.getItem('currentUser');
 
-    if (token && savedUser) {
-      try {
-        const parsed = JSON.parse(savedUser);
-        setUser(parsed);
+    if (!token || !savedUser) return;
 
-        // Redirection automatique selon le rôle
-        if (parsed.role === 'ROLE_STUDENT' || parsed.authorities?.includes('ROLE_STUDENT')) {
-          setCurrentPage('student-home');
-        } else {
-          setCurrentPage('home');
-        }
+    const parsed = JSON.parse(savedUser);
+    setUser(parsed);
 
-      } catch (e) {
-        console.error('Error loading user:', e);
-      }
+    const roles = parsed.authorities || [];
+
+    if (roles.length > 1) {
+      setCurrentPage("choose-role");
+      return;
     }
+
+    redirectBasedOnRole(roles[0]);
   }, []);
 
-  // ⬅️ Connexion
-  const handleLogin = (userData) => {
-    setUser(userData);
-
-    if (userData.role === 'ROLE_STUDENT' || userData.authorities?.includes('ROLE_STUDENT')) {
-      setCurrentPage('student-home');
-    } else {
-      setCurrentPage('home');
-    }
+  // ---------------------------------------------------------
+  // 🔥 Fonction utilitaire pour rediriger selon un rôle
+  // ---------------------------------------------------------
+  const redirectBasedOnRole = (role) => {
+    if (role === "ROLE_ADMIN") return setCurrentPage("admin-dashboard");
+    if (role === "ROLE_ENSEIGNANT") return setCurrentPage("home");
+    return setCurrentPage("student-home"); // défaut = étudiant
   };
 
-  // ⬅️ Déconnexion
+  // ---------------------------------------------------------
+  // 🔥 Connexion
+  // ---------------------------------------------------------
+  const handleLogin = (userData) => {
+    setUser(userData);
+    const roles = userData.authorities || [];
+
+
+
+    // Sauvegarde locale
+    localStorage.setItem("currentUser", JSON.stringify(userData));
+    localStorage.setItem("token", userData.token);
+
+
+    // Un seul rôle → redirection directe
+    if (roles.length === 1) {
+      redirectBasedOnRole(roles[0]);
+      return;
+    }
+
+    // Plusieurs rôles → redirection vers la page de choix
+    setCurrentPage("choose-role");
+  };
+
+  // ---------------------------------------------------------
+  // 🔥 Quand l'utilisateur choisit un rôle
+  // ---------------------------------------------------------
+const handleChooseRole = (role) => {
+  // On enregistre le rôle choisi
+  localStorage.setItem("selectedRole", role);
+  setSelectedRole(role);
+
+  if (role === "ROLE_ADMIN") setCurrentPage("admin-dashboard");
+  else if (role === "ROLE_ENSEIGNANT") setCurrentPage("home");
+  else setCurrentPage("student-home");
+};
+
+
+  // ---------------------------------------------------------
+  // 🔥 Déconnexion
+  // ---------------------------------------------------------
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('currentUser');
@@ -55,13 +108,17 @@ export default function App() {
     setCurrentPage('login');
   };
 
-  // ⬅️ Lancer un examen
+  // ---------------------------------------------------------
+  // 🔥 Start exam
+  // ---------------------------------------------------------
   const handleStartExam = (examId) => {
     setSelectedExamId(examId);
     setCurrentPage('exam-taking');
   };
 
-  // 🟩 🟦 🟧 🟥 RETOUR UNIQUE → PAS D'AUTRE CODE EN DEHORS !!
+  // ---------------------------------------------------------
+  // 🔥 ROUTEUR MANUEL
+  // ---------------------------------------------------------
   return (
     <>
       {currentPage === 'login' && (
@@ -73,11 +130,7 @@ export default function App() {
       )}
 
       {currentPage === 'home' && (
-        <HomePage
-          user={user}
-          onLogout={handleLogout}
-          onNavigate={setCurrentPage}
-        />
+        <HomePage user={user} onLogout={handleLogout} onNavigate={setCurrentPage} />
       )}
 
       {currentPage === 'student-home' && (
@@ -110,6 +163,25 @@ export default function App() {
           user={user}
           examId={selectedExamId}
           onNavigate={setCurrentPage}
+        />
+      )}
+
+      {currentPage === 'admin-dashboard' && (
+        <AdminDashboardPage user={user} onLogout={handleLogout} onNavigate={setCurrentPage} />
+      )}
+
+      {currentPage === 'admin-users' && (
+        <AdminUsersPage user={user} onLogout={handleLogout} onNavigate={setCurrentPage} />
+      )}
+
+      {currentPage === 'admin-login-history' && (
+        <AdminLoginHistoryPage user={user} onLogout={handleLogout} onNavigate={setCurrentPage} />
+      )}
+
+      {currentPage === 'choose-role' && (
+        <ChooseRolePage
+          user={user}
+          onChooseRole={handleChooseRole}
         />
       )}
     </>
