@@ -32,21 +32,23 @@ private final UserRepository userRepository;
         return StreamSupport.stream(userRepository.findAll().spliterator(),false)
                 .map(this::convertToUserResponse).toList();
     }
-@Transactional(readOnly = true)
+@Transactional
     @Override
     public UserResponse promoteToAdmin(long userId) {
-        Optional<User> user = userRepository.findById(userId);
+        Optional<User> user1 = userRepository.findById(userId);
 
-        if(user.isEmpty() || user.get().getAuthorities().stream().anyMatch(authority ->"ROLE_ADMIN"
+        if(user1.isEmpty() || user1.get().getAuthorities().stream().anyMatch(authority ->"ROLE_ADMIN"
                 .equals(authority.getAuthority()))) {
 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
         "User does not exist or already an admin");
         }
-List<Authority> authorities = new ArrayList<Authority>();
-        authorities.add(new Authority("ROLE_ETUDIANT"));
+User user =user1.get();
+        List<Authority> authorities = new ArrayList<Authority>();
+    user.getAuthorities().forEach(a -> authorities.add((Authority) a));
+
         authorities.add(new Authority("ROLE_ADMIN"));
-        user.get().setAuthorities(authorities);
-       User savedUser = userRepository.save(user.get());
+        user.setAuthorities(authorities);
+       User savedUser = userRepository.save(user);
         return convertToUserResponse(savedUser);
     }
     @Override
@@ -61,7 +63,8 @@ List<Authority> authorities = new ArrayList<Authority>();
         }
 
         List<Authority> authorities = new ArrayList<>();
-        authorities.add(new Authority("ROLE_ETUDIANT"));
+        user.getAuthorities().forEach(a -> authorities.add((Authority) a));
+
         authorities.add(new Authority("ROLE_ENSEIGNANT"));
         user.setAuthorities(authorities);
 
