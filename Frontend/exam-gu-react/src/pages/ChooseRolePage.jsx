@@ -1,48 +1,45 @@
 import React from "react";
- 
+
 export default function ChooseRolePage({ user, onChooseRole }) {
 
+  // Récupération robuste
   const roles = user?.authorities || [];
- 
+
+  // Convertir un ROLE_XX vers texte lisible
+  const formatRole = (role) => {
+    switch (role) {
+      case "ROLE_ADMIN":
+        return "Administrateur";
+      case "ROLE_ENSEIGNANT":
+        return "Enseignant";
+      case "ROLE_ETUDIANT":
+        return "Étudiant";
+      default:
+        return role.replace("ROLE_", "").toLowerCase();
+    }
+  };
+
   return (
-<div className="choose-role-container">
-<h1>Choisissez votre rôle</h1>
- 
-      {roles.length === 0 && <p>Aucun rôle trouvé.</p>}
- 
+    <div className="choose-role-container">
+      <h1 className="choose-role-title">Choisissez votre rôle</h1>
+
+      {roles.length === 0 && (
+        <p className="no-role-text">Aucun rôle trouvé pour ce compte.</p>
+      )}
+
       <div className="role-buttons">
 
         {roles.map((role, index) => (
-<button
-
+          <button
             key={index}
-
             className="role-btn"
-
             onClick={() => onChooseRole(role)}
->
-
-            {role === "ROLE_ADMIN" && "Administrateur"}
-
-            {role === "ROLE_ENSEIGNANT" && "Enseignant"}
-
-            {role === "ROLE_ETUDIANT" && "Étudiant"}
-
-            {role !== "ROLE_ADMIN" &&
-
-              role !== "ROLE_ENSEIGNANT" &&
-
-              role !== "ROLE_ETUDIANT" &&
-
-              role}
-</button>
-
+          >
+            {formatRole(role)}
+          </button>
         ))}
-</div>
-</div>
 
+      </div>
+    </div>
   );
-
 }
-
- 

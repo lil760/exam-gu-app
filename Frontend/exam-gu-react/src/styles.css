@@ -2303,4 +2303,43 @@
     font-weight: 600;
     color: #64748b;
   }
+
+.choose-role-container {
+  text-align: center;
+  margin-top: 80px;
+}
+
+.choose-role-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+}
+
+.role-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 350px;
+  margin: 40px auto 0 auto;
+}
+
+.role-btn {
+  background: #ffffff;
+  border: 2px solid #007bff;
+  color: #007bff;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.role-btn:hover {
+  background: #007bff;
+  color: white;
+  transform: scale(1.03);
+}
+
+
 }

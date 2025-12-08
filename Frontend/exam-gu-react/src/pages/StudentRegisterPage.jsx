@@ -4,52 +4,45 @@ import { api } from '../services/api';
 
 export default function StudentRegisterPage({ user, onLogout, onNavigate }) {
   const [searchQuery, setSearchQuery] = useState('');
-  const [exams, setExams] = useState([
-    {
-      id: 3,
-      title: 'EXAMEN 3: Mathématiques',
-      date: '12/12/2025',
-      startTime: '8h00',
-      endTime: '10h45',
-      duration: '2h45',
-      isRegistered: false
-    },
-    {
-      id: 4,
-      title: 'EXAMEN Final : Architecture des logiciels',
-      date: '20/12/2025',
-      startTime: '8h00',
-      endTime: '10h45',
-      duration: '2h45',
-      isRegistered: false
-    },
-    {
-      id: 5,
-      title: 'EXAMEN Final : Certificat IEEE',
-      date: '18/12/2025',
-      startTime: '19h',
-      endTime: '21h45',
-      duration: '2h45',
-      isRegistered: false
-    }
-  ]);
+  const [exams, setExams] = useState([]);
 
-  const filteredExams = exams.filter(exam =>
-    exam.title.toLowerCase().includes(searchQuery.toLowerCase())
+  // Charger les examens depuis le backend
+  useEffect(() => {
+    if (!user || !user.id) {
+      console.error("❌ user.id manquant");
+      return;
+    }
+
+    console.log("🔵 Chargement des examens disponibles pour l'étudiant:", user.id);
+
+    api.getStudentAvailableExams(user.id)
+      .then((data) => {
+        console.log("📘 Examens disponibles reçus:", data);
+        setExams(data);
+      })
+      .catch((err) => console.error("Erreur chargement exams:", err));
+  }, [user]);
+
+  // Filtrer la recherche
+  const filteredExams = exams.filter((exam) =>
+    exam.title?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // Inscription
   const handleRegister = async (examId) => {
     try {
       await api.registerForExam(examId);
-      setExams(exams.map(exam => 
-        exam.id === examId 
-          ? { ...exam, isRegistered: true }
-          : exam
-      ));
-      alert('Inscription réussie !');
+
+      setExams((prev) =>
+        prev.map((exam) =>
+          exam.id === examId ? { ...exam, isRegistered: true } : exam
+        )
+      );
+
+      alert("Inscription réussie !");
     } catch (error) {
-      console.error('Erreur inscription:', error);
-      alert('Erreur lors de l\'inscription');
+      console.error("Erreur inscription :", error);
+      alert("Erreur lors de l'inscription");
     }
   };
 
@@ -75,41 +68,51 @@ export default function StudentRegisterPage({ user, onLogout, onNavigate }) {
           />
         </div>
 
-        {/* Titre section */}
         <div className="student-section-header">
-          <h1 className="student-title-register">LISTES DES EXAMENS DISPONIBLES</h1>
+          <h1 className="student-title-register">LISTE DES EXAMENS DISPONIBLES</h1>
         </div>
 
-        {/* Liste des examens disponibles */}
+        {/* Liste des examens */}
         <section className="student-exam-list">
-          {filteredExams.map((exam) => (
-            <article key={exam.id} className="student-exam-card">
-              <div className="student-exam-content">
-                <div className="student-exam-star">
-                  {exam.isRegistered ? '★' : '☆'}
+          {filteredExams.map((exam) => {
+            const start = new Date(exam.startDateTime);
+            const end = new Date(exam.endDateTime);
+
+            return (
+              <article key={exam.id} className="student-exam-card">
+                <div className="student-exam-content">
+                  <div className="student-exam-star">
+                    {exam.isRegistered ? "★" : "☆"}
+                  </div>
+
+                  <div className="student-exam-info">
+                    <h2 className="student-exam-title">{exam.title}</h2>
+
+                    <p className="student-exam-details">
+                      Début : {start.toLocaleString()} <br />
+                      Fin : {end.toLocaleString()} <br />
+                      Durée : {exam.durationMinutes} min
+                    </p>
+                  </div>
                 </div>
-                <div className="student-exam-info">
-                  <h2 className="student-exam-title">{exam.title}</h2>
-                  <p className="student-exam-details">
-                    Date : {exam.date} - Heure : {exam.startTime}-{exam.endTime} - Durée : {exam.duration}
-                  </p>
-                </div>
-              </div>
-              <button 
-                className={`student-btn-register-exam ${exam.isRegistered ? 'registered' : ''}`}
-                onClick={() => handleRegister(exam.id)}
-                disabled={exam.isRegistered}
-              >
-                {exam.isRegistered ? 'Inscrit ✓' : 'S\'inscrire'}
-              </button>
-            </article>
-          ))}
+
+                <button
+                  className={`student-btn-register-exam ${
+                    exam.isRegistered ? "registered" : ""
+                  }`}
+                  onClick={() => handleRegister(exam.id)}
+                  disabled={exam.isRegistered}
+                >
+                  {exam.isRegistered ? "Inscrit ✓" : "S'inscrire"}
+                </button>
+              </article>
+            );
+          })}
         </section>
 
-        {/* Message si aucun examen */}
         {filteredExams.length === 0 && (
           <div className="no-exams-message">
-            <p>Aucun examen disponible pour le moment</p>
+            <p>Aucun examen disponible pour le moment.</p>
           </div>
         )}
       </main>

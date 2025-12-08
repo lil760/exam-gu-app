@@ -9,22 +9,21 @@ export default function Topbar({
   onSearchChange = () => {},
   currentPage
 }) {
+
   const [showUserMenu, setShowUserMenu] = useState(false);
 
-  const isStudent =
-    user?.authorities?.includes("ROLE_STUDENT") ||
-    user?.role === "ROLE_STUDENT";
+  // Le rôle réellement utilisé par l'utilisateur
+  const chosenRole = localStorage.getItem("selectedRole");
 
   const goHome = () => {
-    if (isStudent) {
-      onNavigate("student-home");
-    } else {
+    if (chosenRole === "ROLE_ADMIN") {
+      onNavigate("admin-dashboard");
+    } else if (chosenRole === "ROLE_ENSEIGNANT") {
       onNavigate("home");
+    } else {
+      onNavigate("student-home");
     }
   };
-
-  // Masquer *uniquement* le bouton Accueil sur student-home
-  const hideHomeButton = isStudent && currentPage === "student-home";
 
   const getInitials = (email) => {
     if (!email) return 'U';
@@ -40,18 +39,16 @@ export default function Topbar({
     <header className="topbar">
       <div className="topbar-left">
 
-        {/* Logo → doit TOUJOURS apparaître */}
+        {/* Logo → renvoie à l'accueil du rôle choisi */}
         <div className="brand-circle" onClick={goHome}>
           <img src="/assets/logo.png" alt="EXAM GU" />
         </div>
 
-        {/* Bouton Accueil → seulement si pas sur student-home */}
-        {!hideHomeButton && (
-          <div className="home-link" onClick={goHome}>
-            <span className="icon-home"></span>
-            <span>Accueil</span>
-          </div>
-        )}
+        {/* Toujours afficher Accueil */}
+        <div className="home-link" onClick={goHome}>
+          <span className="icon-home"></span>
+          <span>Accueil</span>
+        </div>
 
       </div>
 

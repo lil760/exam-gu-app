@@ -23,6 +23,16 @@ export default function App() {
   // 🔥 Vérifier si utilisateur déjà connecté
   // ---------------------------------------------------------
   useEffect(() => {
+
+      const chosen = localStorage.getItem("selectedRole");
+  if (chosen) {
+    if (chosen === "ROLE_ADMIN") setCurrentPage("admin-dashboard");
+    else if (chosen === "ROLE_ENSEIGNANT") setCurrentPage("home");
+    else setCurrentPage("student-home");
+    return;
+}
+
+
     const token = localStorage.getItem('token');
     const savedUser = localStorage.getItem('currentUser');
 
@@ -57,14 +67,12 @@ export default function App() {
     setUser(userData);
     const roles = userData.authorities || [];
 
-    console.log("ROLES REÇUS :", userData.authorities);
-    console.log("Données userData reçues :", userData);
-    console.log("authorities = ", userData.authorities);
-    console.log("type =", typeof userData.authorities[0]);
 
 
     // Sauvegarde locale
     localStorage.setItem("currentUser", JSON.stringify(userData));
+    localStorage.setItem("token", userData.token);
+
 
     // Un seul rôle → redirection directe
     if (roles.length === 1) {
@@ -79,10 +87,16 @@ export default function App() {
   // ---------------------------------------------------------
   // 🔥 Quand l'utilisateur choisit un rôle
   // ---------------------------------------------------------
-  const handleChooseRole = (role) => {
-    setSelectedRole(role);
-    redirectBasedOnRole(role);
-  };
+const handleChooseRole = (role) => {
+  // On enregistre le rôle choisi
+  localStorage.setItem("selectedRole", role);
+  setSelectedRole(role);
+
+  if (role === "ROLE_ADMIN") setCurrentPage("admin-dashboard");
+  else if (role === "ROLE_ENSEIGNANT") setCurrentPage("home");
+  else setCurrentPage("student-home");
+};
+
 
   // ---------------------------------------------------------
   // 🔥 Déconnexion

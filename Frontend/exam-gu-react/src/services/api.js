@@ -23,6 +23,7 @@ function normalizeUserResponse(u) {
 
 export const api = {
 
+  // ==================== AUTH ====================
   async login(email, password) {
     console.log('🔵 Tentative de connexion:', { email });
     
@@ -65,7 +66,6 @@ export const api = {
           role: data.authorities?.[0]?.authority || "ROLE_ETUDIANT"
         }
       };
-      
 
     } catch (error) {
       console.error('❌ Erreur lors de la connexion:', error);
@@ -117,6 +117,7 @@ export const api = {
     }
   },
 
+  // ==================== EXAMENS (ENSEIGNANT) ====================
   async getExams() {
     const token = localStorage.getItem('token');
     console.log('🔵 Récupération des examens avec token:', token ? 'présent' : 'absent');
@@ -179,8 +180,7 @@ export const api = {
   },
 
 
-
-// ===== FONCTIONS ÉTUDIANTS =====
+  // ==================== ÉTUDIANTS ====================
 
   async getAvailableExams() {
     const token = localStorage.getItem('token');
@@ -240,6 +240,7 @@ export const api = {
 
     return await res.json();
   },
+
   async getExamForStudent(examId) {
     const token = localStorage.getItem('token');
     console.log('🔵 Chargement de l\'examen:', examId);
@@ -281,8 +282,27 @@ export const api = {
     return await res.json();
   },
 
-  // ===== ADMIN ENDPOINTS =====
+  // Nouvelle fonction ♦️ CORRECTEMENT INTÉGRÉE ♦️
+  async getStudentAvailableExams(studentId) {
+    console.log("🔵 Récupération examens disponibles pour étudiant:", studentId);
 
+    const res = await fetch(`/api/exams/student/${studentId}/available`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        "Accept": "application/json"
+      }
+    });
+
+    if (!res.ok) {
+      throw new Error("Erreur lors du chargement des examens disponibles");
+    }
+
+    return await res.json();
+  },
+
+
+  // ==================== ADMIN ====================
   async getAllUsers() {
     const token = localStorage.getItem('token');
     console.log('🔵 Récupération de tous les utilisateurs');
@@ -301,7 +321,7 @@ export const api = {
   
     return await res.json();
   },
-  
+
   async createUser(userData) {
     const token = localStorage.getItem('token');
     console.log('🔵 Création d\'un utilisateur:', userData);
@@ -323,7 +343,7 @@ export const api = {
   
     return await res.json();
   },
-  
+
   async updateUser(userId, userData) {
     const token = localStorage.getItem('token');
     console.log('🔵 Mise à jour utilisateur:', userId, userData);
@@ -345,7 +365,7 @@ export const api = {
   
     return await res.json();
   },
-  
+
   async deleteUser(userId) {
     const token = localStorage.getItem('token');
     console.log('🔵 Suppression utilisateur:', userId);
@@ -365,7 +385,7 @@ export const api = {
   
     return true;
   },
-  
+
   async promoteToTeacher(userId) {
     const token = localStorage.getItem('token');
     console.log('🔵 Promotion en enseignant:', userId);
@@ -385,7 +405,7 @@ export const api = {
   
     return await res.json();
   },
-  
+
   async promoteToAdmin(userId) {
     const token = localStorage.getItem('token');
     console.log('🔵 Promotion en admin:', userId);
@@ -405,7 +425,7 @@ export const api = {
   
     return await res.json();
   },
-  
+
   async getLoginHistory() {
     const token = localStorage.getItem('token');
     console.log('🔵 Récupération historique des connexions');
@@ -424,7 +444,7 @@ export const api = {
   
     return await res.json();
   },
-  
+
   async getUserLoginHistory(userId) {
     const token = localStorage.getItem('token');
     console.log('🔵 Récupération historique utilisateur:', userId);
@@ -443,4 +463,5 @@ export const api = {
   
     return await res.json();
   }
+
 };
