@@ -117,7 +117,7 @@ public class ExamServiceImpl implements ExamService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public List<Exam> getAllExams() {
         return examRepository.findAll();
     }
@@ -275,4 +275,13 @@ public class ExamServiceImpl implements ExamService {
 
         return exam;
     }
+    @Override
+    @Transactional(readOnly = true)
+    public List<Exam> getExamsByTeacher(Long teacherId) {
+        User teacher = userRepository.findById(teacherId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Teacher not found"));
+
+        return examRepository.findByCreator(teacher);
+    }
+
 }

@@ -119,5 +119,12 @@ public class ExamController {
     public List<Exam> getAllExams() {
         return examService.getAllExams();
     }
+    @Operation(summary = "Get exams by teacher",
+            description = "Retrieve all exams created by a given teacher")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/teacher/{teacherId}")
+    public List<Exam> getExamsByTeacher(@PathVariable Long teacherId) {
+        return examService.getExamsByTeacher(teacherId);
+    }
 
 }

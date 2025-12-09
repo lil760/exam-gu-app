@@ -21,5 +21,5 @@ public interface ExamService {
     Exam addQuestionsToExam(Long examId, List<Long> questionIds);
     Exam removeQuestionFromExam(Long examId, Long questionId);
     List<Exam> getAllExams();
-
+    List<Exam> getExamsByTeacher(Long teacherId);
 }
