@@ -20,4 +20,6 @@ public interface ExamService {
     Exam getExamResultForStudent(Long examId, Long studentId);
     Exam addQuestionsToExam(Long examId, List<Long> questionIds);
     Exam removeQuestionFromExam(Long examId, Long questionId);
+    List<Exam> getAllExams();
+
 }

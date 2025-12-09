@@ -113,4 +113,11 @@ public class ExamController {
     public Exam getExamResultForStudent(@PathVariable Long examId, @PathVariable Long studentId) {
         return examService.getExamResultForStudent(examId, studentId);
     }
+    @Operation(summary = "Get all exams", description = "Retrieve the list of all exams")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping
+    public List<Exam> getAllExams() {
+        return examService.getAllExams();
+    }
+
 }

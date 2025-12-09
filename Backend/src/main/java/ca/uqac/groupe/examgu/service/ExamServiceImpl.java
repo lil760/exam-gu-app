@@ -118,6 +118,13 @@ public class ExamServiceImpl implements ExamService {
 
     @Override
     @Transactional(readOnly = true)
+    public List<Exam> getAllExams() {
+        return examRepository.findAll();
+    }
+
+
+    @Override
+    @Transactional(readOnly = true)
     public Exam getExamById(Long id) {
         return examRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Exam not found"));
