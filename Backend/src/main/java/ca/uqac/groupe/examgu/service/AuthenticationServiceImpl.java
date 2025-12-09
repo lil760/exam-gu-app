@@ -60,7 +60,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .map(a -> a.getAuthority()) // retourne "ROLE_ETUDIANT" etc.
                 .toList();
         String jwtTokken = jwtService.generateToken(new HashMap<>(), user);
-        return new AuthenticationResponse(jwtTokken,authorities);
+        return new AuthenticationResponse(jwtTokken, user.getId(), authorities);
     }
 
     private boolean isEmailTaken(String email) {
