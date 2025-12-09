@@ -3,14 +3,15 @@ import Topbar from "../components/Topbar.jsx";
 import QuestionCard from "../components/Questioncard.jsx";
 import { api } from "../services/api";
 
-
 export default function CreateExamPage({ user, onLogout, onNavigate }) {
   const [examMeta, setExamMeta] = useState({
     title: '',
+    description: '',
     date: '',
     start: '',
     duration: ''
   });
+
   const [questions, setQuestions] = useState([
     { id: 1, number: 1 }
   ]);
@@ -29,15 +30,46 @@ export default function CreateExamPage({ user, onLogout, onNavigate }) {
   };
 
   const handleSave = async () => {
-    if (!examMeta.title || !examMeta.date || !examMeta.start) {
+    if (!examMeta.title || !examMeta.date || !examMeta.start || !examMeta.duration) {
       alert('Veuillez remplir tous les champs obligatoires de l\'examen');
       return;
     }
 
-    const payload = {
-      ...examMeta,
-      questions: questions.map(q => q.data || {})
+    // Convertir la durée "2h45" ou "45" en minutes
+    const parseDuration = (str) => {
+      const match = str.match(/(\d+)h(\d+)?/);
+      if (match) {
+        const hours = parseInt(match[1]) || 0;
+        const mins = parseInt(match[2]) || 0;
+        return hours * 60 + mins;
+      }
+      return parseInt(str) || 60;
     };
+
+    const durationMinutes = parseDuration(examMeta.duration);
+
+    // Construire startDateTime au format ISO
+    const startDateTime = `${examMeta.date}T${examMeta.start}:00`;
+
+    // Calculer endDateTime
+    const startDate = new Date(startDateTime);
+    const endDate = new Date(startDate.getTime() + durationMinutes * 60000);
+    const endDateTime = endDate.toISOString().slice(0, 19);
+
+    // Récupérer l'ID de l'enseignant
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+    const payload = {
+      title: examMeta.title,
+      description: examMeta.description || '',
+      startDateTime: startDateTime,
+      endDateTime: endDateTime,
+      durationMinutes: durationMinutes,
+      teacherId: currentUser?.id || null,
+      questionIds: questions.map(q => q.data?.id).filter(Boolean)
+    };
+
+    console.log('📤 Payload envoyé:', payload);
 
     try {
       await api.createExam(payload);
@@ -69,21 +101,31 @@ export default function CreateExamPage({ user, onLogout, onNavigate }) {
             onChange={(e) => setExamMeta({ ...examMeta, title: e.target.value })}
             required
           />
+          
+          <input
+            type="text"
+            placeholder="Description de l'examen"
+            value={examMeta.description}
+            onChange={(e) => setExamMeta({ ...examMeta, description: e.target.value })}
+          />
+          
           <input
             type="date"
             value={examMeta.date}
             onChange={(e) => setExamMeta({ ...examMeta, date: e.target.value })}
             required
           />
+          
           <input
             type="time"
             value={examMeta.start}
             onChange={(e) => setExamMeta({ ...examMeta, start: e.target.value })}
             required
           />
+          
           <input
             type="text"
-            placeholder="Durée (ex: 2h45)"
+            placeholder="Durée (ex: 2h45 ou 90)"
             value={examMeta.duration}
             onChange={(e) => setExamMeta({ ...examMeta, duration: e.target.value })}
             required

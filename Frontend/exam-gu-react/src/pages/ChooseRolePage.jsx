@@ -2,10 +2,16 @@ import React from 'react';
 
 export default function ChooseRolePage({ user, onChooseRole, onBack }) {
   // Récupération robuste
-  const roles = user?.authorities || [];
+  const roles = Array.isArray(user?.authorities) 
+    ? user.authorities.filter(r => !!r)  // retire null / undefined
+    : [];
 
   // Convertir un ROLE_XX vers texte lisible
   const formatRole = (role) => {
+    if (!role || typeof role !== "string") {
+      return "Rôle inconnu";  // sécurité contre null
+    }
+
     switch (role) {
       case 'ROLE_ADMIN':
         return 'Administrateur';
@@ -16,12 +22,17 @@ export default function ChooseRolePage({ user, onChooseRole, onBack }) {
       case 'ROLE_STUDENT':
         return 'Étudiant';
       default:
-        return role.replace('ROLE_', '').toLowerCase();
+        return role
+          .replace('ROLE_', '')
+          .toLowerCase()
+          .replace(/^\w/, c => c.toUpperCase());
     }
   };
 
   // Obtenir la classe CSS selon le rôle
   const getRoleClass = (role) => {
+    if (!role) return 'student'; // sécurité
+
     switch (role) {
       case 'ROLE_ADMIN':
         return 'admin';
@@ -45,6 +56,7 @@ export default function ChooseRolePage({ user, onChooseRole, onBack }) {
       padding: '20px'
     }}>
       <div className="choose-role-container">
+
         {/* Bouton Retour */}
         <button 
           className="back-button" 
@@ -53,8 +65,6 @@ export default function ChooseRolePage({ user, onChooseRole, onBack }) {
         >
           ←
         </button>
-
-        
 
         <h1 className="choose-role-title">Choisissez votre rôle</h1>
         <p className="choose-role-subtitle">
@@ -76,6 +86,7 @@ export default function ChooseRolePage({ user, onChooseRole, onBack }) {
             </button>
           ))}
         </div>
+
       </div>
     </div>
   );

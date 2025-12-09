@@ -7,7 +7,20 @@ export default function HomePage({ user, onLogout, onNavigate }) {
   const [expandedPanel, setExpandedPanel] = useState(null);
   const [exams, setExams] = useState([
     ]);
-
+    useEffect(() => {
+      const loadExams = async () => {
+        try {
+          const data = await api.getExams();
+          console.log('✅ Examens chargés:', data);
+          setExams(data);
+        } catch (err) {
+          console.error('❌ Erreur chargement examens:', err);
+        } finally {
+          setLoading(false);
+        }
+      };
+      loadExams();
+    }, []);
   const filteredExams = exams.filter(exam =>
     exam.title.toLowerCase().includes(searchQuery.toLowerCase())
   );

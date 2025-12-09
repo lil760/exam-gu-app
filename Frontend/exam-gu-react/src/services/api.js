@@ -23,55 +23,68 @@ function normalizeUserResponse(u) {
 
 export const api = {
 
-  // ==================== AUTH ====================
-  async login(email, password) {
-    console.log('🔵 Tentative de connexion:', { email });
-    
-    try {
-      const res = await fetch(`/api/auth/login`, {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
-      });
+  
+ // ==================== AUTH ====================
+    async login(email, password) {
+      console.log('🔵 Tentative de connexion:', { email });
+      
+      try {
+        const res = await fetch(`/api/auth/login`, {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({ email, password })
+        });
 
-      console.log('🔵 Statut de la réponse:', res.status);
+        console.log('🔵 Statut de la réponse:', res.status);
 
-      if (!res.ok) {
-        const errorText = await res.text();
-        console.error('❌ Erreur backend:', errorText);
+        if (!res.ok) {
+          const errorText = await res.text();
+          console.error('❌ Erreur backend:', errorText);
 
-        try {
-          const errorJson = JSON.parse(errorText);
-          throw new Error(errorJson.message || errorText);
-        } catch (e) {
-          throw new Error(errorText || `Erreur ${res.status}`);
+          try {
+            const errorJson = JSON.parse(errorText);
+            throw new Error(errorJson.message || errorText);
+          } catch (e) {
+            throw new Error(errorText || `Erreur ${res.status}`);
+          }
         }
-      }
 
-      const data = await res.json();
-      console.log('✅ Réponse du backend:', data);
+        const data = await res.json();
+        console.log('✅ Réponse du backend:', data);
 
-      if (!data.token) {
-        throw new Error('Pas de token dans la réponse');
-      }
+        if (!data.token) {
+          throw new Error('Pas de token dans la réponse');
+        }
 
-      return {
-        token: data.token,
-        user: {
+        // ⬇️⬇️⬇️ AJOUTEZ CES LIGNES POUR SAUVEGARDER LE TOKEN ⬇️⬇️⬇️
+        const userObject = {
+          id: data.id,
           email,
           authorities: Array.isArray(data.authorities) ? data.authorities : [],
-          role: data.authorities?.[0]?.authority || "ROLE_ETUDIANT"
-        }
-      };
+          role: data.authorities?.[0]?.authority || data.authorities?.[0] || "ROLE_ETUDIANT"
+        };
 
-    } catch (error) {
-      console.error('❌ Erreur lors de la connexion:', error);
-      throw error;
-    }
-  },
+        // Sauvegarder le token dans localStorage
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('currentUser', JSON.stringify(userObject));
+        
+        console.log('✅ Token sauvegardé:', data.token);
+        console.log('✅ User sauvegardé:', userObject);
+        // ⬆️⬆️⬆️ FIN DE L'AJOUT ⬆️⬆️⬆️
+
+        return {
+          token: data.token,
+          user: userObject
+        };
+
+      } catch (error) {
+        console.error('❌ Erreur lors de la connexion:', error);
+        throw error;
+      }
+    },
 
   async register(userData) {
     console.log('🔵 Tentative d\'inscription:', userData);
@@ -120,20 +133,21 @@ export const api = {
   // ==================== EXAMENS (ENSEIGNANT) ====================
   async getExams() {
     const token = localStorage.getItem('token');
-    console.log('🔵 Récupération des examens avec token:', token ? 'présent' : 'absent');
-
-    const res = await fetch(`/api/exams`, {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    console.log('🔵 Récupération des examens pour enseignant:', currentUser?.id);
+    
+    const res = await fetch(`/api/exams/teacher/${currentUser.id}`, {
       headers: { 
         'Authorization': `Bearer ${token}`,
         'Accept': 'application/json'
       }
     });
-
+  
     if (!res.ok) {
       console.error('❌ Erreur chargement examens:', res.status);
       throw new Error('Erreur chargement examens');
     }
-
+  
     return await res.json();
   },
 
@@ -158,6 +172,7 @@ export const api = {
 
     return await res.json();
   },
+
 
   async deleteExam(id) {
     const token = localStorage.getItem('token');

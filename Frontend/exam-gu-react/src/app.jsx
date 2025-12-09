@@ -33,7 +33,7 @@ export default function App() {
     const chosenRole  = localStorage.getItem("selectedRole");
     
     // 🔹 Si pas connecté → page login
-    if (!token || !savedUser) {
+    if (!token || !savedUser) {handleBackToLogin
       setCurrentPage("login");
       return;
     }
@@ -83,7 +83,6 @@ export default function App() {
 
     // 📌 Stocker dans localStorage
     localStorage.setItem("currentUser", JSON.stringify(userData));
-    localStorage.setItem("token", userData.token);
 
     const roles = userData.authorities || [];
 
@@ -101,8 +100,16 @@ export default function App() {
   // 🔥 Quand utilisateur choisit un rôle
   // -------------------------------------------------------------------
   const handleChooseRole = (role) => {
+    // 1. Sauvegarder le rôle choisi
     localStorage.setItem("selectedRole", role);
     setSelectedRole(role);
+  
+    // 2. ⬇️ AJOUTER CECI : Mettre à jour currentUser avec le rôle choisi
+    const updatedUser = { ...user, role: role };
+    setUser(updatedUser);
+    localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+  
+    // 3. Rediriger
     redirectBasedOnRole(role);
   };
 
