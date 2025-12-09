@@ -6,31 +6,7 @@ export default function HomePage({ user, onLogout, onNavigate }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedPanel, setExpandedPanel] = useState(null);
   const [exams, setExams] = useState([
-    {
-      id: 1,
-      title: 'Examen Calcul avancé 2',
-      date: '27 Nov 2025',
-      time: '08:30',
-      duration: '2h45',
-      students: ['Eva Martin', 'Rayan B.', 'Amina T.']
-    },
-    {
-      id: 2,
-      title: 'Examen Élément de programmation',
-      date: '30 Nov 2025',
-      time: '13:00',
-      duration: '2h45',
-      students: ['Yasmina L.', 'Samuel K.']
-    },
-    {
-      id: 3,
-      title: 'Examen Algèbre matricielle',
-      date: '12 Déc 2025',
-      time: '09:00',
-      duration: '2h45',
-      students: ['Jean D.', 'Inès P.', 'Léo R.']
-    }
-  ]);
+    ]);
 
   const filteredExams = exams.filter(exam =>
     exam.title.toLowerCase().includes(searchQuery.toLowerCase())

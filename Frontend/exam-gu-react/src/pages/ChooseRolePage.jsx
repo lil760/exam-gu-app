@@ -1,44 +1,81 @@
-import React from "react";
+import React from 'react';
 
-export default function ChooseRolePage({ user, onChooseRole }) {
-
+export default function ChooseRolePage({ user, onChooseRole, onBack }) {
   // Récupération robuste
   const roles = user?.authorities || [];
 
   // Convertir un ROLE_XX vers texte lisible
   const formatRole = (role) => {
     switch (role) {
-      case "ROLE_ADMIN":
-        return "Administrateur";
-      case "ROLE_ENSEIGNANT":
-        return "Enseignant";
-      case "ROLE_ETUDIANT":
-        return "Étudiant";
+      case 'ROLE_ADMIN':
+        return 'Administrateur';
+      case 'ROLE_ENSEIGNANT':
+      case 'ROLE_TEACHER':
+        return 'Enseignant';
+      case 'ROLE_ETUDIANT':
+      case 'ROLE_STUDENT':
+        return 'Étudiant';
       default:
-        return role.replace("ROLE_", "").toLowerCase();
+        return role.replace('ROLE_', '').toLowerCase();
+    }
+  };
+
+  // Obtenir la classe CSS selon le rôle
+  const getRoleClass = (role) => {
+    switch (role) {
+      case 'ROLE_ADMIN':
+        return 'admin';
+      case 'ROLE_ENSEIGNANT':
+      case 'ROLE_TEACHER':
+        return 'teacher';
+      case 'ROLE_ETUDIANT':
+      case 'ROLE_STUDENT':
+        return 'student';
+      default:
+        return 'student';
     }
   };
 
   return (
-    <div className="choose-role-container">
-      <h1 className="choose-role-title">Choisissez votre rôle</h1>
+    <div style={{ 
+      minHeight: '100vh', 
+      display: 'flex', 
+      alignItems: 'center', 
+      justifyContent: 'center',
+      padding: '20px'
+    }}>
+      <div className="choose-role-container">
+        {/* Bouton Retour */}
+        <button 
+          className="back-button" 
+          onClick={onBack}
+          title="Retour à la connexion"
+        >
+          ←
+        </button>
 
-      {roles.length === 0 && (
-        <p className="no-role-text">Aucun rôle trouvé pour ce compte.</p>
-      )}
+        
 
-      <div className="role-buttons">
+        <h1 className="choose-role-title">Choisissez votre rôle</h1>
+        <p className="choose-role-subtitle">
+          Sélectionnez le rôle avec lequel vous souhaitez vous connecter
+        </p>
 
-        {roles.map((role, index) => (
-          <button
-            key={index}
-            className="role-btn"
-            onClick={() => onChooseRole(role)}
-          >
-            {formatRole(role)}
-          </button>
-        ))}
+        {roles.length === 0 && (
+          <p className="no-role-text">Aucun rôle trouvé pour ce compte.</p>
+        )}
 
+        <div className="role-buttons">
+          {roles.map((role, index) => (
+            <button
+              key={index}
+              className={`role-btn ${getRoleClass(role)}`}
+              onClick={() => onChooseRole(role)}
+            >
+              {formatRole(role)}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
