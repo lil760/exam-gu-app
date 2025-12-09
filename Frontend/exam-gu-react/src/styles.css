@@ -2343,3 +2343,275 @@
 
 
 }
+/* Page Choix de Rôle */
+.choose-role-container {
+  background: white;
+  border-radius: 32px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  padding: 60px 80px;
+  max-width: 700px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+/* Bouton Retour en haut à gauche */
+.back-button {
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  background: rgba(29, 128, 75, 0.1);
+  border: 2px solid var(--eg-green3);
+  color: var(--eg-green3);
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 24px;
+  font-weight: 700;
+  z-index: 10;
+}
+
+.back-button:hover {
+  background: var(--eg-green3);
+  color: white;
+  transform: translateX(-3px);
+}
+
+/* Décoration en arrière-plan */
+.choose-role-container::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 300px;
+  height: 300px;
+  background: linear-gradient(135deg, var(--eg-green2), var(--eg-green3));
+  border-radius: 50%;
+  opacity: 0.05;
+  z-index: 0;
+}
+
+.choose-role-container::after {
+  content: '';
+  position: absolute;
+  bottom: -80px;
+  left: -80px;
+  width: 250px;
+  height: 250px;
+  background: linear-gradient(135deg, var(--eg-green3), var(--eg-green2));
+  border-radius: 50%;
+  opacity: 0.05;
+  z-index: 0;
+}
+
+/* Logo EXAM-GU */
+.logo-badge {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 30px;
+  background: linear-gradient(135deg, var(--eg-green3), var(--eg-green2));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 36px;
+  font-weight: 700;
+  box-shadow: 0 10px 30px rgba(29, 128, 75, 0.3);
+  position: relative;
+  z-index: 1;
+}
+
+/* Titre */
+.choose-role-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--eg-green1);
+  margin-bottom: 15px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Sous-titre */
+.choose-role-subtitle {
+  font-size: 16px;
+  color: #64748b;
+  margin-bottom: 50px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Message "Aucun rôle" */
+.no-role-text {
+  color: #ef4444;
+  font-size: 16px;
+  padding: 20px;
+  background: #fee2e2;
+  border-radius: 12px;
+  margin-top: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Grille des boutons de rôle */
+.role-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 25px;
+  margin-top: 40px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Boutons de rôle - TOUS EN VERT */
+.role-btn {
+  position: relative;
+  padding: 40px 30px;
+  border: 3px solid var(--eg-green3);
+  border-radius: 20px;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(29, 128, 75, 0.15);
+  background: white;
+  color: var(--eg-green3);
+}
+
+/* Icônes dans les boutons */
+.role-btn::before {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 32px;
+  opacity: 0.2;
+}
+
+.role-btn.admin::before {
+  content: '👑';
+}
+
+.role-btn.teacher::before {
+  content: '🎓';
+}
+
+.role-btn.student::before {
+  content: '📚';
+}
+
+/* Hover effects - Tous deviennent verts */
+.role-btn:hover {
+  background: linear-gradient(135deg, var(--eg-green3), var(--eg-green2));
+  color: white;
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 15px 40px rgba(29, 128, 75, 0.3);
+  border-color: var(--eg-green2);
+}
+
+.role-btn:hover::before {
+  opacity: 0.3;
+}
+
+.role-btn:active {
+  transform: translateY(-2px) scale(1.01);
+}
+
+/* Animation d'apparition */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.role-btn {
+  animation: fadeInUp 0.6s ease-out backwards;
+}
+
+.role-btn:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.role-btn:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.role-btn:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+/* Effet de brillance au survol */
+.role-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s;
+}
+
+.role-btn:hover::after {
+  left: 100%;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .choose-role-container {
+    padding: 50px 30px 40px;
+  }
+
+  .back-button {
+    top: 15px;
+    left: 15px;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+
+  .choose-role-title {
+    font-size: 28px;
+  }
+
+  .role-buttons {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .role-btn {
+    padding: 35px 25px;
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .choose-role-container {
+    padding: 45px 20px 30px;
+    border-radius: 24px;
+  }
+
+  
+
+  .choose-role-title {
+    font-size: 24px;
+  }
+
+  .role-btn {
+    padding: 30px 20px;
+    font-size: 16px;
+  }
+}

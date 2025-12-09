@@ -18,7 +18,12 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [selectedExamId, setSelectedExamId] = useState(null);
   const [selectedRole, setSelectedRole] = useState(null);
-
+  const handleBackToLogin = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('currentUser');
+    setUser(null);
+    setCurrentPage('login'); // ← Ceci affiche LoginPage.jsx
+  };
   // -------------------------------------------------------------------
   // 🔥 Vérifier si utilisateur déjà connecté
   // -------------------------------------------------------------------
@@ -26,7 +31,7 @@ export default function App() {
     const token       = localStorage.getItem("token");
     const savedUser   = localStorage.getItem("currentUser");
     const chosenRole  = localStorage.getItem("selectedRole");
-
+    
     // 🔹 Si pas connecté → page login
     if (!token || !savedUser) {
       setCurrentPage("login");
@@ -132,7 +137,13 @@ export default function App() {
       {currentPage === 'reset' && (
         <ResetPasswordPage onNavigate={setCurrentPage} />
       )}
-
+      {currentPage === 'choose-role' && (
+      <ChooseRolePage 
+      user={user} 
+      onChooseRole={handleChooseRole}
+      onBack={handleBackToLogin} // ← Bouton retour
+  />
+)}
       {currentPage === 'home' && (
         <HomePage user={user} onLogout={handleLogout} onNavigate={setCurrentPage} />
       )}
